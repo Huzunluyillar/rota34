@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Rota 34 Admin</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span>🎯</span>
+                    <h2>Rota 34 Admin</h2>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar">👤</div>
+                    <div>
+                        <strong>Admin</strong>
+                        <p style="font-size: 0.85rem; opacity: 0.7;">Yönetici</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item active">
+                    <span>📊</span> Dashboard
+                </a>
+                <a href="colors.html" class="menu-item">
+                    <span>🎨</span> Renkler & Tema
+                </a>
+                <a href="logo.html" class="menu-item">
+                    <span>🖼️</span> Logo Yönetimi
+                </a>
+                <a href="homepage.html" class="menu-item">
+                    <span>🏠</span> Ana Sayfa
+                </a>
+                <a href="features-page.html" class="menu-item">
+                    <span>⭐</span> Özellikler Sayfası
+                </a>
+                <a href="contact-page.html" class="menu-item">
+                    <span>📞</span> İletişim Sayfası
+                </a>
+                <a href="footer-settings.html" class="menu-item">
+                    <span>📄</span> Footer Ayarları
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="top-bar">
+                <h1>📊 Dashboard</h1>
+                <button class="btn-logout" onclick="logout()">Çıkış Yap</button>
+            </div>
+
+            <div class="grid-3">
+                <div class="card">
+                    <h3 style="color: var(--primary); font-size: 2.5rem; margin-bottom: 0.5rem;">4</h3>
+                    <p style="color: #666;">Toplam Sayfa</p>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent); font-size: 2.5rem; margin-bottom: 0.5rem;">12</h3>
+                    <p style="color: #666;">Özellik Sayısı</p>
+                </div>
+                <div class="card">
+                    <h3 style="color: #28a745; font-size: 2.5rem; margin-bottom: 0.5rem;">100%</h3>
+                    <p style="color: #666;">Site Durumu</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">🚀 Hoş Geldiniz!</h2>
+                <p style="color: #666; line-height: 1.8; font-size: 1.1rem;">
+                    Rota 34 admin paneline hoş geldiniz. Sol menüden düzenlemek istediğiniz 
+                    bölüme geçiş yapabilirsiniz. Her değişiklik anında kaydedilir ve sitenizde görünür.
+                </p>
+                <div style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 10px;">
+                    <strong style="color: var(--primary);">💡 İpucu:</strong>
+                    <p style="margin-top: 0.5rem; color: #666;">
+                        Değişikliklerinizi test etmek için sitenizi yeni bir sekmede açın: 
+                        <a href="../index.html" target="_blank" style="color: var(--primary);">rota34.app</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3 class="card-title">📈 Son Değişiklikler</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding: 0.8rem 0; border-bottom: 1px solid #eee;">
+                            <strong>Ana Sayfa</strong>
+                            <p style="color: #666; font-size: 0.9rem;">2 saat önce</p>
+                        </li>
+                        <li style="padding: 0.8rem 0; border-bottom: 1px solid #eee;">
+                            <strong>Renkler</strong>
+                            <p style="color: #666; font-size: 0.9rem;">5 saat önce</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">🎯 Hızlı Erişim</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        <a href="colors.html" class="btn btn-primary">🎨 Renkleri Değiştir</a>
+                        <a href="logo.html" class="btn btn-primary">🖼️ Logo Güncelle</a>
+                        <a href="homepage.html" class="btn btn-primary">🏠 Ana Sayfayı Düzenle</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

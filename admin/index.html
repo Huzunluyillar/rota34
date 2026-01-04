@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Giriş - Rota 34</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo-circle">🎯</div>
+            <h2>Rota 34 Admin</h2>
+            <p class="login-subtitle">Yönetim Paneline Hoş Geldiniz</p>
+            
+            <div id="errorMsg" class="error-message"></div>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>👤 Kullanıcı Adı</label>
+                    <input type="text" id="username" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>🔒 Şifre</label>
+                    <input type="password" id="password" required>
+                </div>
+                
+                <button type="submit" class="btn-login">Giriş Yap</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            // Basit kontrol (gerçek projede API kullanılmalı)
+            if (username === 'admin' && password === 'admin123') {
+                sessionStorage.setItem('adminAuth', 'true');
+                window.location.href = 'dashboard.html';
+            } else {
+                errorMsg.textContent = '❌ Kullanıcı adı veya şifre hatalı!';
+                errorMsg.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ana Sayfa Düzenleme - Rota 34 Admin</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span>🎯</span>
+                    <h2>Rota 34 Admin</h2>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar">👤</div>
+                    <div>
+                        <strong>Admin</strong>
+                        <p style="font-size: 0.85rem; opacity: 0.7;">Yönetici</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">
+                    <span>📊</span> Dashboard
+                </a>
+                <a href="colors.html" class="menu-item">
+                    <span>🎨</span> Renkler & Tema
+                </a>
+                <a href="logo.html" class="menu-item">
+                    <span>🖼️</span> Logo Yönetimi
+                </a>
+                <a href="homepage.html" class="menu-item active">
+                    <span>🏠</span> Ana Sayfa
+                </a>
+                <a href="features-page.html" class="menu-item">
+                    <span>⭐</span> Özellikler Sayfası
+                </a>
+                <a href="contact-page.html" class="menu-item">
+                    <span>📞</span> İletişim Sayfası
+                </a>
+                <a href="footer-settings.html" class="menu-item">
+                    <span>📄</span> Footer Ayarları
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="top-bar">
+                <h1>🏠 Ana Sayfa Düzenleme</h1>
+                <button class="btn-logout" onclick="logout()">Çıkış Yap</button>
+            </div>
+
+            <div id="successMsg" class="success-msg"></div>
+
+            <!-- Hero Section -->
+            <div class="card">
+                <h2 class="card-title">🎯 Hero Bölümü (Üst Banner)</h2>
+                
+                <div class="form-group">
+                    <label>Ana Başlık</label>
+                    <input type="text" id="heroTitle" 
+                           value="Sahayı Akıllı Yönetin, Verimliliği Katla"
+                           placeholder="Ana başlık buraya...">
+                </div>
+
+                <div class="form-group">
+                    <label>Alt Başlık (Açıklama)</label>
+                    <textarea id="heroSubtitle" rows="3">Fortune 500 standartlarında saha yönetimi. Yapay zeka destekli rota optimizasyonu, gerçek zamanlı takip ve detaylı analizlerle işinizi bir üst seviyeye taşıyın.</textarea>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveHero()">💾 Hero Bölümünü Kaydet</button>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="card">
+                <h2 class="card-title">📊 İstatistikler</h2>
+                <p style="color: #666; margin-bottom: 1.5rem;">
+                    Ana sayfada gösterilen 3 adet istatistik kartı
+                </p>
+
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label>İstatistik 1 - Değer</label>
+                        <input type="text" id="stat1Value" value="%40" placeholder="%" maxlength="10">
+                        <label style="margin-top: 0.5rem;">İstatistik 1 - Açıklama</label>
+                        <input type="text" id="stat1Label" value="Zaman Tasarrufu" placeholder="Açıklama">
+                    </div>
+
+                    <div class="form-group">
+                        <label>İstatistik 2 - Değer</label>
+                        <input type="text" id="stat2Value" value="%60" placeholder="%" maxlength="10">
+                        <label style="margin-top: 0.5rem;">İstatistik 2 - Açıklama</label>
+                        <input type="text" id="stat2Label" value="Yakıt Tasarrufu" placeholder="Açıklama">
+                    </div>
+
+                    <div class="form-group">
+                        <label>İstatistik 3 - Değer</label>
+                        <input type="text" id="stat3Value" value="10K+" placeholder="Sayı" maxlength="10">
+                        <label style="margin-top: 0.5rem;">İstatistik 3 - Açıklama</label>
+                        <input type="text" id="stat3Label" value="Aktif Kullanıcı" placeholder="Açıklama">
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveStats()">💾 İstatistikleri Kaydet</button>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="card">
+                <h2 class="card-title">🚀 CTA Bölümü (Alt Banner)</h2>
+                
+                <div class="form-group">
+                    <label>CTA Başlığı</label>
+                    <input type="text" id="ctaTitle" 
+                           value="Bugün Başlayın, Farkı Yarın Görün"
+                           placeholder="CTA başlığı...">
+                </div>
+
+                <div class="form-group">
+                    <label>CTA Açıklaması</label>
+                    <textarea id="ctaText" rows="2">Saha çalışmanızı optimize edin. Verimliliğinizi katlayın. Müşteri memnuniyetini artırın.</textarea>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Buton 1 Metni</label>
+                        <input type="text" id="ctaBtn1" value="Google Play'den İndir">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Buton 2 Metni</label>
+                        <input type="text" id="ctaBtn2" value="Demo Talep Et">
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveCTA()">💾 CTA Kaydet</button>
+            </div>
+
+            <!-- Önizleme -->
+            <div class="card">
+                <h2 class="card-title">👁️ Canlı Önizleme</h2>
+                <div style="padding: 2rem; background: #f8f9fa; border-radius: 10px;">
+                    <div style="background: linear-gradient(135deg, #0F2027 0%, #203A43 100%); padding: 3rem; border-radius: 15px; color: white; text-align: center;">
+                        <h1 id="previewTitle" style="font-size: 2.5rem; margin-bottom: 1rem;">Sahayı Akıllı Yönetin, Verimliliği Katla</h1>
+                        <p id="previewSubtitle" style="color: rgba(255,255,255,0.8); margin-bottom: 2rem;">Fortune 500 standartlarında saha yönetimi...</p>
+                        
+                        <div style="display: flex; gap: 2rem; justify-content: center; margin-bottom: 2rem;">
+                            <div>
+                                <div id="previewStat1" style="font-size: 2rem; color: var(--primary); font-weight: 800;">%40</div>
+                                <div id="previewStat1Label" style="font-size: 0.9rem; opacity: 0.7;">Zaman Tasarrufu</div>
+                            </div>
+                            <div>
+                                <div id="previewStat2" style="font-size: 2rem; color: var(--primary); font-weight: 800;">%60</div>
+                                <div id="previewStat2Label" style="font-size: 0.9rem; opacity: 0.7;">Yakıt Tasarrufu</div>
+                            </div>
+                            <div>
+                                <div id="previewStat3" style="font-size: 2rem; color: var(--primary); font-weight: 800;">10K+</div>
+                                <div id="previewStat3Label" style="font-size: 0.9rem; opacity: 0.7;">Aktif Kullanıcı</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; padding: 2rem;">
+                <a href="../index.html" target="_blank" class="btn btn-primary" style="text-decoration: none;">
+                    🌐 Gerçek Sayfayı Görüntüle
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        function saveHero() {
+            const data = {
+                title: document.getElementById('heroTitle').value,
+                subtitle: document.getElementById('heroSubtitle').value
+            };
+            saveData('homepage_hero', data);
+            updatePreview();
+            showSuccess('Hero bölümü kaydedildi!');
+        }
+
+        function saveStats() {
+            const data = {
+                stat1: {
+                    value: document.getElementById('stat1Value').value,
+                    label: document.getElementById('stat1Label').value
+                },
+                stat2: {
+                    value: document.getElementById('stat2Value').value,
+                    label: document.getElementById('stat2Label').value
+                },
+                stat3: {
+                    value: document.getElementById('stat3Value').value,
+                    label: document.getElementById('stat3Label').value
+                }
+            };
+            saveData('homepage_stats', data);
+            updatePreview();
+            showSuccess('İstatistikler kaydedildi!');
+        }
+
+        function saveCTA() {
+            const data = {
+                title: document.getElementById('ctaTitle').value,
+                text: document.getElementById('ctaText').value,
+                btn1: document.getElementById('ctaBtn1').value,
+                btn2: document.getElementById('ctaBtn2').value
+            };
+            saveData('homepage_cta', data);
+            showSuccess('CTA bölümü kaydedildi!');
+        }
+
+        function updatePreview() {
+            const hero = getData('homepage_hero');
+            const stats = getData('homepage_stats');
+            
+            if (hero) {
+                document.getElementById('previewTitle').textContent = hero.title;
+                document.getElementById('previewSubtitle').textContent = hero.subtitle;
+            }
+            
+            if (stats) {
+                document.getElementById('previewStat1').textContent = stats.stat1.value;
+                document.getElementById('previewStat1Label').textContent = stats.stat1.label;
+                document.getElementById('previewStat2').textContent = stats.stat2.value;
+                document.getElementById('previewStat2Label').textContent = stats.stat2.label;
+                document.getElementById('previewStat3').textContent = stats.stat3.value;
+                document.getElementById('previewStat3Label').textContent = stats.stat3.label;
+            }
+        }
+
+        // Sayfa yüklendiğinde verileri yükle
+        window.addEventListener('load', () => {
+            const hero = getData('homepage_hero');
+            const stats = getData('homepage_stats');
+            const cta = getData('homepage_cta');
+            
+            if (hero) {
+                document.getElementById('heroTitle').value = hero.title;
+                document.getElementById('heroSubtitle').value = hero.subtitle;
+            }
+            
+            if (stats) {
+                document.getElementById('stat1Value').value = stats.stat1.value;
+                document.getElementById('stat1Label').value = stats.stat1.label;
+                document.getElementById('stat2Value').value = stats.stat2.value;
+                document.getElementById('stat2Label').value = stats.stat2.label;
+                document.getElementById('stat3Value').value = stats.stat3.value;
+                document.getElementById('stat3Label').value = stats.stat3.label;
+            }
+            
+            if (cta) {
+                document.getElementById('ctaTitle').value = cta.title;
+                document.getElementById('ctaText').value = cta.text;
+                document.getElementById('ctaBtn1').value = cta.btn1;
+                document.getElementById('ctaBtn2').value = cta.btn2;
+            }
+            
+            updatePreview();
+        });
+    </script>
+</body>
+</html>

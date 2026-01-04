@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Yönetimi - Rota 34 Admin</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span>🎯</span>
+                    <h2>Rota 34 Admin</h2>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar">👤</div>
+                    <div>
+                        <strong>Admin</strong>
+                        <p style="font-size: 0.85rem; opacity: 0.7;">Yönetici</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">
+                    <span>📊</span> Dashboard
+                </a>
+                <a href="colors.html" class="menu-item">
+                    <span>🎨</span> Renkler & Tema
+                </a>
+                <a href="logo.html" class="menu-item active">
+                    <span>🖼️</span> Logo Yönetimi
+                </a>
+                <a href="homepage.html" class="menu-item">
+                    <span>🏠</span> Ana Sayfa
+                </a>
+                <a href="features-page.html" class="menu-item">
+                    <span>⭐</span> Özellikler Sayfası
+                </a>
+                <a href="contact-page.html" class="menu-item">
+                    <span>📞</span> İletişim Sayfası
+                </a>
+                <a href="footer-settings.html" class="menu-item">
+                    <span>📄</span> Footer Ayarları
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="top-bar">
+                <h1>🖼️ Logo Yönetimi</h1>
+                <button class="btn-logout" onclick="logout()">Çıkış Yap</button>
+            </div>
+
+            <div id="successMsg" class="success-msg"></div>
+
+            <div class="card">
+                <h2 class="card-title">📝 Logo Metni</h2>
+                <div class="form-group">
+                    <label>Logo Yazısı</label>
+                    <input type="text" id="logoText" value="Rota 34" placeholder="Rota 34">
+                    <small style="color: #999;">Logo yanında görünecek metin</small>
+                </div>
+                <button class="btn btn-primary" onclick="saveLogoText()">💾 Metni Kaydet</button>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">🎨 Logo İkonu</h2>
+                <p style="color: #666; margin-bottom: 1.5rem;">
+                    Logo için bir emoji seçin veya kendi SVG kodunuzu ekleyin
+                </p>
+                
+                <div class="form-group">
+                    <label>Emoji Seçimi (Hızlı)</label>
+                    <div style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
+                        <button onclick="selectEmoji('🎯')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">🎯</button>
+                        <button onclick="selectEmoji('🚀')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">🚀</button>
+                        <button onclick="selectEmoji('⭐')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">⭐</button>
+                        <button onclick="selectEmoji('🔥')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">🔥</button>
+                        <button onclick="selectEmoji('💎')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">💎</button>
+                        <button onclick="selectEmoji('🎪')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">🎪</button>
+                        <button onclick="selectEmoji('🌟')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">🌟</button>
+                        <button onclick="selectEmoji('💫')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">💫</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Veya Özel Emoji</label>
+                    <input type="text" id="customEmoji" placeholder="🎯" maxlength="2">
+                </div>
+
+                <button class="btn btn-primary" onclick="saveLogo()">💾 Logo Kaydet</button>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">👁️ Logo Önizleme</h2>
+                <div style="padding: 3rem; background: linear-gradient(135deg, #0F2027 0%, #203A43 100%); border-radius: 15px; text-align: center;">
+                    <div style="display: inline-flex; align-items: center; gap: 1rem; padding: 1rem 2rem; background: rgba(255,255,255,0.1); border-radius: 50px;">
+                        <span id="logoPreview" style="font-size: 3rem;">🎯</span>
+                        <span id="textPreview" style="font-size: 2rem; color: white; font-weight: 800;">Rota 34</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">ℹ️ Bilgi</h2>
+                <p style="color: #666; line-height: 1.8;">
+                    <strong>Not:</strong> Logo değişiklikleri tüm sayfalarda (Ana Sayfa, Özellikler, İletişim) otomatik olarak güncellenecektir.
+                    Değişikliklerinizi görmek için sayfayı yenilemeniz gerekebilir.
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        function selectEmoji(emoji) {
+            document.getElementById('customEmoji').value = emoji;
+            document.getElementById('logoPreview').textContent = emoji;
+        }
+
+        function saveLogoText() {
+            const text = document.getElementById('logoText').value;
+            saveData('logoText', text);
+            document.getElementById('textPreview').textContent = text;
+            showSuccess('Logo metni kaydedildi!');
+        }
+
+        function saveLogo() {
+            const emoji = document.getElementById('customEmoji').value;
+            if (emoji) {
+                saveData('logoEmoji', emoji);
+                document.getElementById('logoPreview').textContent = emoji;
+                showSuccess('Logo kaydedildi!');
+            } else {
+                alert('Lütfen bir emoji seçin veya girin!');
+            }
+        }
+
+        // Sayfa yüklendiğinde kaydedilmiş logoyu yükle
+        window.addEventListener('load', () => {
+            const savedText = getData('logoText', 'Rota 34');
+            const savedEmoji = getData('logoEmoji', '🎯');
+            
+            document.getElementById('logoText').value = savedText;
+            document.getElementById('customEmoji').value = savedEmoji;
+            document.getElementById('logoPreview').textContent = savedEmoji;
+            document.getElementById('textPreview').textContent = savedText;
+        });
+    </script>
+</body>
+</html>

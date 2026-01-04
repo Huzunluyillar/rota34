@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renk Yönetimi - Rota 34 Admin</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar (Aynı) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span>🎯</span>
+                    <h2>Rota 34 Admin</h2>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar">👤</div>
+                    <div>
+                        <strong>Admin</strong>
+                        <p style="font-size: 0.85rem; opacity: 0.7;">Yönetici</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">
+                    <span>📊</span> Dashboard
+                </a>
+                <a href="colors.html" class="menu-item active">
+                    <span>🎨</span> Renkler & Tema
+                </a>
+                <a href="logo.html" class="menu-item">
+                    <span>🖼️</span> Logo Yönetimi
+                </a>
+                <a href="homepage.html" class="menu-item">
+                    <span>🏠</span> Ana Sayfa
+                </a>
+                <a href="features-page.html" class="menu-item">
+                    <span>⭐</span> Özellikler Sayfası
+                </a>
+                <a href="contact-page.html" class="menu-item">
+                    <span>📞</span> İletişim Sayfası
+                </a>
+                <a href="footer-settings.html" class="menu-item">
+                    <span>📄</span> Footer Ayarları
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="top-bar">
+                <h1>🎨 Renkler & Tema</h1>
+                <button class="btn-logout" onclick="logout()">Çıkış Yap</button>
+            </div>
+
+            <div id="successMsg" class="success-msg"></div>
+
+            <div class="card">
+                <h2 class="card-title">🎨 Ana Renk Paleti</h2>
+                <p style="color: #666; margin-bottom: 2rem;">
+                    Sitenizin temel renklerini buradan değiştirebilirsiniz. 
+                    Değişiklikler anında uygulanır.
+                </p>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>🔴 Ana Renk (Primary)</label>
+                        <div class="color-preview">
+                            <input type="color" id="primaryColor" value="#FF6B35">
+                            <input type="text" id="primaryText" value="#FF6B35" 
+                                   style="flex: 1;" placeholder="#FF6B35">
+                        </div>
+                        <small style="color: #999;">Butonlar, başlıklar ve vurgular için</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>🔵 İkincil Renk (Secondary)</label>
+                        <div class="color-preview">
+                            <input type="color" id="secondaryColor" value="#0F2027">
+                            <input type="text" id="secondaryText" value="#0F2027" 
+                                   style="flex: 1;" placeholder="#0F2027">
+                        </div>
+                        <small style="color: #999;">Koyu arka planlar ve metinler için</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>🟠 Vurgu Rengi (Accent)</label>
+                        <div class="color-preview">
+                            <input type="color" id="accentColor" value="#F77F00">
+                            <input type="text" id="accentText" value="#F77F00" 
+                                   style="flex: 1;" placeholder="#F77F00">
+                        </div>
+                        <small style="color: #999;">Hover efektleri ve gradient'ler için</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>⚫ Koyu Renk (Dark)</label>
+                        <div class="color-preview">
+                            <input type="color" id="darkColor" value="#1A1A2E">
+                            <input type="text" id="darkText" value="#1A1A2E" 
+                                   style="flex: 1;" placeholder="#1A1A2E">
+                        </div>
+                        <small style="color: #999;">Metin ve footer için</small>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                    <button class="btn btn-primary" onclick="saveColors()">
+                        💾 Renkleri Kaydet
+                    </button>
+                    <button class="btn btn-danger" onclick="resetColors()">
+                        🔄 Varsayılana Dön
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">👁️ Önizleme</h2>
+                <div style="padding: 2rem; background: #f8f9fa; border-radius: 10px;">
+                    <button class="btn btn-primary" style="margin-right: 1rem;">
+                        Örnek Buton
+                    </button>
+                    <p style="margin-top: 1rem; color: var(--dark);">
+                        Bu metin koyu renkle gösteriliyor.
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        // Renk inputlarını senkronize et
+        ['primary', 'secondary', 'accent', 'dark'].forEach(color => {
+            const colorInput = document.getElementById(color + 'Color');
+            const textInput = document.getElementById(color + 'Text');
+            
+            colorInput.addEventListener('input', (e) => {
+                textInput.value = e.target.value;
+            });
+            
+            textInput.addEventListener('input', (e) => {
+                if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+                    colorInput.value = e.target.value;
+                }
+            });
+        });
+
+        // Renkleri kaydet
+        function saveColors() {
+            const colors = {
+                primary: document.getElementById('primaryColor').value,
+                secondary: document.getElementById('secondaryColor').value,
+                accent: document.getElementById('accentColor').value,
+                dark: document.getElementById('darkColor').value
+            };
+            
+            // CSS değişkenlerini güncelle
+            document.documentElement.style.setProperty('--primary', colors.primary);
+            document.documentElement.style.setProperty('--secondary', colors.secondary);
+            document.documentElement.style.setProperty('--accent', colors.accent);
+            document.documentElement.style.setProperty('--dark', colors.dark);
+            
+            // LocalStorage'a kaydet
+            saveData('colors', colors);
+            showSuccess('Renkler başarıyla kaydedildi!');
+        }
+
+        // Varsayılan renklere dön
+        function resetColors() {
+            if (confirm('Renkleri varsayılan değerlere döndürmek istediğinizden emin misiniz?')) {
+                document.getElementById('primaryColor').value = '#FF6B35';
+                document.getElementById('primaryText').value = '#FF6B35';
+                document.getElementById('secondaryColor').value = '#0F2027';
+                document.getElementById('secondaryText').value = '#0F2027';
+                document.getElementById('accentColor').value = '#F77F00';
+                document.getElementById('accentText').value = '#F77F00';
+                document.getElementById('darkColor').value = '#1A1A2E';
+                document.getElementById('darkText').value = '#1A1A2E';
+                saveColors();
+            }
+        }
+
+        // Sayfa yüklendiğinde kaydedilmiş renkleri yükle
+        window.addEventListener('load', () => {
+            const savedColors = getData('colors');
+            if (savedColors) {
+                document.getElementById('primaryColor').value = savedColors.primary;
+                document.getElementById('primaryText').value = savedColors.primary;
+                document.getElementById('secondaryColor').value = savedColors.secondary;
+                document.getElementById('secondaryText').value = savedColors.secondary;
+                document.getElementById('accentColor').value = savedColors.accent;
+                document.getElementById('accentText').value = savedColors.accent;
+                document.getElementById('darkColor').value = savedColors.dark;
+                document.getElementById('darkText').value = savedColors.dark;
+            }
+        });
+    </script>
+</body>
+</html>
