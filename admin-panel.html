@@ -46,90 +46,79 @@
         }
 
         .menu-item {
-            padding: 1rem 1.5rem;
-            margin-bottom: 0.5rem;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 1rem;
+            padding: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
         }
 
-        .menu-item:hover {
+        .menu-item:hover, .menu-item.active {
             background: rgba(255, 255, 255, 0.1);
-            transform: translateX(5px);
-        }
-
-        .menu-item.active {
-            background: linear-gradient(135deg, #FF6B35, #F77F00);
+            color: white;
         }
 
         /* Main Content */
         .main-content {
             margin-left: 280px;
-            flex: 1;
             padding: 2rem;
+            width: calc(100% - 280px);
         }
 
-        .header {
-            background: white;
-            padding: 1.5rem 2rem;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            color: #0F2027;
-        }
-
-        .logout-btn {
-            padding: 0.8rem 2rem;
-            background: #FF6B35;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .logout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
-        }
-
-        /* Content Sections */
-        .content-section {
-            display: none;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
 
-        .card-title {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: #0F2027;
+        .user-info {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
 
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: #FF6B35;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Cards */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Forms */
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -137,607 +126,207 @@
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #333;
+            color: #666;
+            font-size: 0.9rem;
         }
 
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
+        .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 0.8rem;
-            border: 2px solid #e1e8ed;
-            border-radius: 8px;
-            font-size: 1rem;
+            border: 1px solid #e1e1e1;
+            border-radius: 10px;
+            outline: none;
             transition: all 0.3s ease;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
+        .form-group input:focus {
             border-color: #FF6B35;
-        }
-
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .color-picker-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .color-input {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .color-input input[type="color"] {
-            width: 60px;
-            height: 40px;
-            border: none;
-            cursor: pointer;
         }
 
         .btn {
-            padding: 1rem 2rem;
+            padding: 0.8rem 1.5rem;
             border: none;
-            border-radius: 8px;
-            font-weight: 600;
+            border-radius: 10px;
             cursor: pointer;
+            font-weight: bold;
             transition: all 0.3s ease;
-            font-size: 1rem;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #FF6B35, #F77F00);
+            background: #FF6B35;
             color: white;
+            width: 100%;
         }
 
         .btn-primary:hover {
+            background: #e85a2a;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
         }
 
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-danger {
-            background: #dc3545;
-            color: white;
-        }
-
-        .features-list {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .feature-item {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .feature-controls {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .icon-btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-
-        .icon-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .file-upload {
-            border: 2px dashed #e1e8ed;
-            padding: 2rem;
-            text-align: center;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .file-upload:hover {
-            border-color: #FF6B35;
-            background: #fff5f2;
-        }
-
-        .preview-image {
-            max-width: 200px;
-            max-height: 200px;
-            margin-top: 1rem;
-            border-radius: 10px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .stat-card h3 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-card p {
-            opacity: 0.9;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                position: relative;
-                height: auto;
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .login-container {
-            min-height: 100vh;
+        /* Login Screen Overlay */
+        #loginScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0F2027 0%, #203A43 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #0F2027 0%, #203A43 50%, #2C5364 100%);
+            z-index: 9999;
         }
 
-        .login-box {
+        .login-card {
             background: white;
             padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 30px;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
-        .login-box h2 {
+        #loginError {
+            color: #ff4757;
             text-align: center;
-            margin-bottom: 2rem;
-            color: #0F2027;
+            margin-top: 1rem;
+            display: none;
+            font-size: 0.9rem;
         }
 
-        .alert {
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .alert-danger {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+        #adminPanel {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Login Screen -->
-    <div id="loginScreen" class="login-container">
-        <div class="login-box">
-            <h2>🔐 Admin Girişi</h2>
-            <div id="loginError" class="alert alert-danger" style="display: none;">
-                Kullanıcı adı veya şifre hatalı!
-            </div>
-            <div class="form-group">
-                <label>Kullanıcı Adı</label>
-                <input type="text" id="loginUsername" placeholder="admin">
-            </div>
-            <div class="form-group">
-                <label>Şifre</label>
-                <input type="password" id="loginPassword" placeholder="••••••••">
-            </div>
-            <button class="btn btn-primary" style="width: 100%;" onclick="login()">Giriş Yap</button>
+
+    <div id="loginScreen">
+        <div class="login-card">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Admin Girişi</h2>
+            <form onsubmit="login(event)">
+                <div class="form-group">
+                    <label>Kullanıcı Adı</label>
+                    <input type="text" id="loginUsername" required placeholder="admin">
+                </div>
+                <div class="form-group">
+                    <label>Şifre</label>
+                    <input type="password" id="loginPassword" required placeholder="••••••">
+                </div>
+                <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                <div id="loginError">Kullanıcı adı veya şifre hatalı!</div>
+            </form>
         </div>
     </div>
 
-    <!-- Admin Panel -->
-    <div id="adminPanel" class="admin-container" style="display: none;">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-logo">
-                <span style="font-size: 2rem;">🎯</span>
-                <h2>Rota 34 Admin</h2>
-            </div>
-            <div class="menu-item active" onclick="showSection('dashboard')">
-                <span>📊</span> Dashboard
-            </div>
-            <div class="menu-item" onclick="showSection('colors')">
-                <span>🎨</span> Renkler & Tema
-            </div>
-            <div class="menu-item" onclick="showSection('content')">
-                <span>📝</span> İçerik Yönetimi
-            </div>
-            <div class="menu-item" onclick="showSection('features')">
-                <span>⭐</span> Özellikler
-            </div>
-            <div class="menu-item" onclick="showSection('media')">
-                <span>🖼️</span> Medya Galerisi
-            </div>
-            <div class="menu-item" onclick="showSection('logo')">
-                <span>🔰</span> Logo Yönetimi
-            </div>
-            <div class="menu-item" onclick="showSection('contact')">
-                <span>📞</span> İletişim Bilgileri
-            </div>
-            <div class="menu-item" onclick="showSection('seo')">
-                <span>🔍</span> SEO Ayarları
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="header">
-                <h1 id="headerTitle">Dashboard</h1>
-                <button class="logout-btn" onclick="logout()">Çıkış Yap</button>
-            </div>
-
-            <!-- Dashboard Section -->
-            <div id="dashboard" class="content-section active">
-                <div class="stats-grid">
-                    <div class="stat-card" style="background: linear-gradient(135deg, #FF6B35, #F77F00);">
-                        <h3>12</h3>
-                        <p>Toplam Özellik</p>
-                    </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-                        <h3>4</h3>
-                        <p>Sayfa Sayısı</p>
-                    </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
-                        <h3>24</h3>
-                        <p>Medya Dosyası</p>
-                    </div>
-                    <div class="stat-card" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
-                        <h3>5</h3>
-                        <p>Tema Rengi</p>
-                    </div>
+    <div id="adminPanel">
+        <div class="admin-container">
+            <div class="sidebar">
+                <div class="sidebar-logo">
+                    <div style="width: 35px; height: 35px; background: #FF6B35; border-radius: 8px;"></div>
+                    <h2>Rota 34</h2>
                 </div>
-
-                <div class="card">
-                    <div class="card-title">📊 Hızlı Erişim</div>
-                    <p>Admin paneline hoş geldiniz! Sol menüden düzenlemek istediğiniz bölüme geçiş yapabilirsiniz.</p>
-                    <p style="margin-top: 1rem; color: #666;">Son güncelleme: Bugün, 14:30</p>
-                </div>
+                <nav>
+                    <a href="#" class="menu-item active">📊 Dashboard</a>
+                    <a href="#" class="menu-item">📝 Duyurular</a>
+                    <a href="#" class="menu-item">⚙️ SEO Ayarları</a>
+                    <a href="#" class="menu-item">👥 Kullanıcılar</a>
+                    <a href="#" class="menu-item">📁 Dosya Yöneticisi</a>
+                    <a href="#" class="menu-item">💬 Mesajlar</a>
+                    <a href="javascript:void(0)" onclick="logout()" class="menu-item" style="margin-top: 2rem; color: #ff6b6b;">🚪 Çıkış Yap</a>
+                </nav>
             </div>
 
-            <!-- Colors Section -->
-            <div id="colors" class="content-section">
-                <div class="card">
-                    <div class="card-title">🎨 Renk Paleti</div>
-                    <div class="color-picker-group">
+            <div class="main-content">
+                <header>
+                    <h1>Yönetim Paneli</h1>
+                    <div class="user-info">
+                        <span>Hoş geldin, <strong>Yönetici</strong></span>
+                        <div class="avatar">A</div>
+                    </div>
+                </header>
+
+                <div class="grid-container">
+                    <div class="card">
+                        <h3>⚙️ SEO & Meta Ayarları</h3>
                         <div class="form-group">
-                            <label>Ana Renk (Primary)</label>
-                            <div class="color-input">
-                                <input type="color" value="#FF6B35" id="primaryColor">
-                                <input type="text" value="#FF6B35" id="primaryColorText">
-                            </div>
+                            <label>Site Başlığı (Title)</label>
+                            <input type="text" value="Rota 34 - Saha Yönetiminde Yeni Nesil Çözüm">
                         </div>
                         <div class="form-group">
-                            <label>İkincil Renk (Secondary)</label>
-                            <div class="color-input">
-                                <input type="color" value="#004E89" id="secondaryColor">
-                                <input type="text" value="#004E89" id="secondaryColorText">
-                            </div>
+                            <label>Meta Açıklaması</label>
+                            <textarea rows="4">Rota 34 ile saha ekiplerinizi akıllı rota optimizasyonu ile verimliliğinizi %60 artırın.</textarea>
                         </div>
                         <div class="form-group">
-                            <label>Vurgu Rengi (Accent)</label>
-                            <div class="color-input">
-                                <input type="color" value="#F77F00" id="accentColor">
-                                <input type="text" value="#F77F00" id="accentColorText">
-                            </div>
+                            <label>Anahtar Kelimeler (Keywords)</label>
+                            <input type="text" value="saha yönetimi, rota optimizasyonu, mobil uygulama">
                         </div>
                         <div class="form-group">
-                            <label>Koyu Renk (Dark)</label>
-                            <div class="color-input">
-                                <input type="color" value="#1A1A2E" id="darkColor">
-                                <input type="text" value="#1A1A2E" id="darkColorText">
-                            </div>
+                            <label>Google Analytics ID</label>
+                            <input type="text" placeholder="UA-XXXXXXXXX-X">
                         </div>
+                        <button class="btn btn-primary">SEO Ayarlarını Kaydet</button>
                     </div>
-                    <button class="btn btn-primary" onclick="saveColors()">Renkleri Kaydet</button>
-                </div>
 
-                <div class="card">
-                    <div class="card-title">🌈 Gradient Ayarları</div>
-                    <div class="grid-2">
+                    <div class="card">
+                        <h3>📝 Hızlı Duyuru Yayınla</h3>
                         <div class="form-group">
-                            <label>Hero Gradient Başlangıç</label>
-                            <input type="color" value="#0F2027">
+                            <label>Duyuru Başlığı</label>
+                            <input type="text" placeholder="Duyuru başlığını girin...">
                         </div>
                         <div class="form-group">
-                            <label>Hero Gradient Bitiş</label>
-                            <input type="color" value="#2C5364">
-                        </div>
-                    </div>
-                    <button class="btn btn-primary">Gradient Kaydet</button>
-                </div>
-            </div>
-
-            <!-- Content Section -->
-            <div id="content" class="content-section">
-                <div class="card">
-                    <div class="card-title">📝 Ana Sayfa İçeriği</div>
-                    <div class="form-group">
-                        <label>Ana Başlık</label>
-                        <input type="text" value="Sahayı Akıllı Yönetin, Verimliliği Katla">
-                    </div>
-                    <div class="form-group">
-                        <label>Alt Başlık</label>
-                        <textarea>Fortune 500 standartlarında saha yönetimi. Yapay zeka destekli rota optimizasyonu, gerçek zamanlı takip ve detaylı analizlerle işinizi bir üst seviyeye taşıyın.</textarea>
-                    </div>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Zaman Tasarrufu (%)</label>
-                            <input type="number" value="40">
+                            <label>Duyuru İçeriği</label>
+                            <textarea rows="6" placeholder="Duyuru metnini buraya yazın..."></textarea>
                         </div>
                         <div class="form-group">
-                            <label>Yakıt Tasarrufu (%)</label>
-                            <input type="number" value="60">
+                            <label>Yayın Durumu</label>
+                            <select>
+                                <option>Taslak</option>
+                                <option selected>Hemen Yayınla</option>
+                            </select>
                         </div>
+                        <button class="btn btn-primary">Duyuruyu Paylaş</button>
                     </div>
-                    <div class="form-group">
-                        <label>Aktif Kullanıcı Sayısı</label>
-                        <input type="text" value="10K+">
-                    </div>
-                    <button class="btn btn-primary">İçeriği Kaydet</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">📄 Footer İçeriği</div>
-                    <div class="form-group">
-                        <label>Şirket Adı</label>
-                        <input type="text" value="SahadanSoft">
-                    </div>
-                    <div class="form-group">
-                        <label>Şirket Açıklaması</label>
-                        <textarea>Fortune 500 standartlarında saha yönetimi çözümleri.</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Telif Hakkı Metni</label>
-                        <input type="text" value="© 2026 SahadanSoft. Tüm hakları saklıdır.">
-                    </div>
-                    <button class="btn btn-primary">Footer Kaydet</button>
-                </div>
-            </div>
-
-            <!-- Features Section -->
-            <div id="features" class="content-section">
-                <div class="card">
-                    <div class="card-title">
-                        ⭐ Özellik Yönetimi
-                        <button class="btn btn-primary" style="margin-left: auto;" onclick="addFeature()">+ Yeni Özellik Ekle</button>
-                    </div>
-                    <div class="features-list" id="featuresList">
-                        <div class="feature-item">
-                            <div>
-                                <strong>🗺️ Haritaya Dokunarak Müşteri Ekle</strong>
-                                <p style="color: #666; margin-top: 0.5rem;">Harita üzerinde istediğiniz konuma dokunun...</p>
-                            </div>
-                            <div class="feature-controls">
-                                <button class="icon-btn" style="background: #4CAF50; color: white;">✏️</button>
-                                <button class="icon-btn" style="background: #f44336; color: white;">🗑️</button>
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <div>
-                                <strong>📱 QR Kod ile Anında Ekleme</strong>
-                                <p style="color: #666; margin-top: 0.5rem;">Müşteri QR kodunu tarayın...</p>
-                            </div>
-                            <div class="feature-controls">
-                                <button class="icon-btn" style="background: #4CAF50; color: white;">✏️</button>
-                                <button class="icon-btn" style="background: #f44336; color: white;">🗑️</button>
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <div>
-                                <strong>✏️ Manuel Adres Girişi</strong>
-                                <p style="color: #666; margin-top: 0.5rem;">Klasik yöntem: İstediğiniz müşteri bilgilerini...</p>
-                            </div>
-                            <div class="feature-controls">
-                                <button class="icon-btn" style="background: #4CAF50; color: white;">✏️</button>
-                                <button class="icon-btn" style="background: #f44336; color: white;">🗑️</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card" id="featureEditor" style="display: none;">
-                    <div class="card-title">✏️ Özellik Düzenle</div>
-                    <div class="form-group">
-                        <label>Emoji/İkon</label>
-                        <input type="text" placeholder="🗺️">
-                    </div>
-                    <div class="form-group">
-                        <label>Başlık</label>
-                        <input type="text" placeholder="Özellik Başlığı">
-                    </div>
-                    <div class="form-group">
-                        <label>Açıklama</label>
-                        <textarea placeholder="Özellik açıklaması..."></textarea>
-                    </div>
-                    <div style="display: flex; gap: 1rem;">
-                        <button class="btn btn-primary">Kaydet</button>
-                        <button class="btn btn-secondary" onclick="closeFeatureEditor()">İptal</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Media Section -->
-            <div id="media" class="content-section">
-                <div class="card">
-                    <div class="card-title">🖼️ Medya Yükle</div>
-                    <div class="file-upload" onclick="document.getElementById('fileInput').click()">
-                        <input type="file" id="fileInput" style="display: none;" accept="image/*,video/*" onchange="previewFile(event)">
-                        <p style="font-size: 3rem; margin-bottom: 1rem;">📁</p>
-                        <p style="color: #666;">Resim veya video yüklemek için tıklayın</p>
-                        <p style="color: #999; font-size: 0.9rem; margin-top: 0.5rem;">Desteklenen formatlar: JPG, PNG, GIF, MP4, WebM</p>
-                    </div>
-                    <div id="previewContainer"></div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">📂 Mevcut Medya Dosyaları</div>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem;">
-                        <div style="position: relative;">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23ddd' width='200' height='200'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-size='20'%3EÖrnek%3C/text%3E%3C/svg%3E" style="width: 100%; border-radius: 10px;">
-                            <button class="icon-btn" style="position: absolute; top: 5px; right: 5px; background: #f44336; color: white;">🗑️</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Logo Section -->
-            <div id="logo" class="content-section">
-                <div class="card">
-                    <div class="card-title">🔰 Logo Yönetimi</div>
-                    <div class="form-group">
-                        <label>Mevcut Logo</label>
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='90' fill='%23FF6B35' opacity='0.2'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23FF6B35' font-size='60' font-weight='bold'%3ER34%3C/text%3E%3C/svg%3E" class="preview-image">
-                    </div>
-                    <div class="file-upload" onclick="document.getElementById('logoInput').click()">
-                        <input type="file" id="logoInput" style="display: none;" accept="image/*" onchange="previewLogo(event)">
-                        <p style="font-size: 3rem; margin-bottom: 1rem;">🖼️</p>
-                        <p style="color: #666;">Yeni logo yüklemek için tıklayın</p>
-                        <p style="color: #999; font-size: 0.9rem; margin-top: 0.5rem;">Önerilen boyut: 200x200px, PNG formatı</p>
-                    </div>
-                    <div id="logoPreview"></div>
-                    <div class="form-group" style="margin-top: 2rem;">
-                        <label>Logo Metni</label>
-                        <input type="text" value="Rota 34">
-                    </div>
-                    <button class="btn btn-primary">Logo Ayarlarını Kaydet</button>
-                </div>
-            </div>
-
-            <!-- Contact Section -->
-            <div id="contact" class="content-section">
-                <div class="card">
-                    <div class="card-title">📞 İletişim Bilgileri</div>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>E-posta</label>
-                            <input type="email" value="support@rota34.app">
-                        </div>
-                        <div class="form-group">
-                            <label>Telefon</label>
-                            <input type="tel" value="+90 532 472 84 28">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Adres</label>
-                        <textarea>Şeyhsinan Mah. Kızılcık 6. Aralık Sok. No:1
-Çorlu / Tekirdağ</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>WhatsApp Numarası</label>
-                        <input type="tel" value="905324728428">
-                    </div>
-                    <button class="btn btn-primary">İletişim Bilgilerini Kaydet</button>
-                </div>
-            </div>
-
-            <!-- SEO Section -->
-            <div id="seo" class="content-section">
-                <div class="card">
-                    <div class="card-title">🔍 SEO Ayarları</div>
-                    <div class="form-group">
-                        <label>Site Başlığı (Title)</label>
-                        <input type="text" value="Rota 34 - Saha Yönetiminde Yeni Nesil Çözüm">
-                    </div>
-                    <div class="form-group">
-                        <label>Meta Açıklama (Description)</label>
-                        <textarea>Fortune 500 standartlarında saha yönetimi çözümü. Yapay zeka destekli rota optimizasyonu ile verimliliğinizi %60 artırın.</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Anahtar Kelimeler (Keywords)</label>
-                        <input type="text" value="saha yönetimi, rota optimizasyonu, mobil uygulama">
-                    </div>
-                    <div class="form-group">
-                        <label>Google Analytics ID</label>
-                        <input type="text" placeholder="UA-XXXXXXXXX-X">
-                    </div>
-                    <button class="btn btn-primary">SEO Ayarlarını Kaydet</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Login/Logout Functions
         async function login(event) {
-    if(event) event.preventDefault();
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorMsg = document.getElementById('loginError');
 
-    const username = document.getElementById('loginUsername').value;
-    const password = document.getElementById('loginPassword').value;
-    const errorMsg = document.getElementById('loginError');
+            try {
+                // Vercel API'ye istek gönderiyoruz
+                const response = await fetch('/api/check-auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
 
-    try {
-        // Oluşturduğumuz API'ye istek atıyoruz
-        const response = await fetch('/api/check-auth', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        });
+                const data = await response.json();
 
-        const data = await response.json();
-
-        if (data.success) {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'flex';
-            window.scrollTo(0, 0);
-        } else {
-            errorMsg.style.display = 'block';
-            errorMsg.innerText = "Kullanıcı adı veya şifre hatalı!";
+                if (data.success) {
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('adminPanel').style.display = 'block';
+                    window.scrollTo(0, 0);
+                } else {
+                    errorMsg.style.display = 'block';
+                }
+            } catch (error) {
+                console.error("Hata:", error);
+                alert("API dosyasına ulaşılamadı. Lütfen api/check-auth.js dosyasını GitHub'a yüklediğinizden emin olun.");
+            }
         }
-    } catch (error) {
-        console.error("Hata:", error);
-        alert("Bir hata oluştu, lütfen sonra tekrar deneyin.");
-    }
-}
 
         function logout() {
             if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
-                document.getElementById('loginScreen
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
