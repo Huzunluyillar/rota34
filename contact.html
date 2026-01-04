@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim - Rota 34</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .contact-section {
+            padding: 12rem 5% 8rem;
+            background: white;
+        }
+        .contact-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+        .contact-info h3 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--dark);
+        }
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        .contact-item:hover {
+            background: #e9ecef;
+            transform: translateX(10px);
+        }
+        .contact-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+        .contact-details h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        .contact-details p {
+            color: #666;
+            line-height: 1.6;
+        }
+        .contact-details a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .contact-details a:hover {
+            color: var(--accent);
+        }
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: #25D366;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+        }
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.5);
+        }
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo-container" onclick="window.location.href='index.html'">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='grad1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FFA94D;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%23FF6B35;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23F77F00;stop-opacity:1' /%3E%3C/linearGradient%3E%3ClinearGradient id='grad2' x1='100%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%23764ba2;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23f093fb;stop-opacity:1' /%3E%3C/linearGradient%3E%3Cfilter id='glow'%3E%3CfeGaussianBlur stdDeviation='4' result='coloredBlur'/%3E%3CfeMerge%3E%3CfeMergeNode in='coloredBlur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Ccircle cx='100' cy='100' r='90' fill='url(%23grad1)' opacity='0.2'/%3E%3Cpath d='M 40 60 Q 40 40 60 40 L 140 40 Q 160 40 160 60 Q 160 80 140 90 L 110 105 L 110 130 M 110 150 L 110 155' stroke='white' stroke-width='12' stroke-linecap='round' fill='none' filter='url(%23glow)'/%3E%3Cpath d='M 50 80 A 50 50 0 0 1 150 80' stroke='url(%23grad2)' stroke-width='8' fill='none' opacity='0.6'/%3E%3Cpath d='M 60 100 A 40 40 0 0 0 140 100' stroke='url(%23grad2)' stroke-width='8' fill='none' opacity='0.6'/%3E%3Ccircle cx='100' cy='80' r='30' fill='url(%23grad1)' opacity='0.3'/%3E%3Cpath d='M 85 75 L 95 85 L 115 65' stroke='white' stroke-width='6' stroke-linecap='round' fill='none' filter='url(%23glow)'/%3E%3Cpath d='M 70 120 L 80 130 L 90 120 M 110 120 L 120 130 L 130 120' stroke='url(%23grad2)' stroke-width='6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='100' cy='100' r='8' fill='white' opacity='0.8'/%3E%3C/svg%3E" alt="Rota 34" class="logo-img">
+                <span class="logo-text">Rota 34</span>
+            </div>
+            <div class="nav-links">
+                <a href="features.html">Özellikler</a>
+                <a href="privacy.html">Gizlilik</a>
+                <a href="contact.html">İletişim</a>
+                <a href="#" class="cta-nav">APK İndir</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="contact-section">
+        <div class="section-header">
+            <h2>Bizimle İletişime Geçin</h2>
+            <p>Sorularınız mı var? Yardıma mı ihtiyacınız var? Her zaman yanınızdayız!</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>İletişim Bilgileri</h3>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">📧</div>
+                    <div class="contact-details">
+                        <h4>E-posta</h4>
+                        <p>Teknik destek ve sorularınız için</p>
+                        <a href="mailto:support@rota34.app">support@rota34.app</a>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">📱</div>
+                    <div class="contact-details">
+                        <h4>Telefon</h4>
+                        <p>Doğrudan destek hattımız</p>
+                        <a href="tel:+905324728428">+90 532 472 84 28</a>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div class="contact-details">
+                        <h4>Adres</h4>
+                        <p>Şeyhsinan Mah. Kızılcık 6. Aralık Sok. No:1<br>Çorlu / Tekirdağ</p>
+                    </div>
+                </div>
+
+                <a href="https://wa.me/905324728428?text=Merhaba,%20Rota%2034%20hakkında%20bilgi%20almak%20istiyorum" class="whatsapp-btn" target="_blank">
+                    <span>💬</span>
+                    <span>WhatsApp'tan Yazın</span>
+                </a>
+            </div>
+
+            <div class="contact-info">
+                <h3>Hızlı Bağlantılar</h3>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">❓</div>
+                    <div class="contact-details">
+                        <h4>Sıkça Sorulan Sorular</h4>
+                        <p>Merak ettiklerinizin cevapları burada</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">📚</div>
+                    <div class="contact-details">
+                        <h4>Kullanım Kılavuzu</h4>
+                        <p>Adım adım özellik anlatımları</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">🎥</div>
+                    <div class="contact-details">
+                        <h4>Video Eğitimler</h4>
+                        <p>Görsel anlatımlarla öğrenin</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">💡</div>
+                    <div class="contact-details">
+                        <h4>Özellik Önerileri</h4>
+                        <p>Fikirlerinizi bizimle paylaşın</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-container">
+            <h2>Bugün Başlayın, Farkı Yarın Görün</h2>
+            <p>Saha çalışmanızı optimize edin. Verimliliğinizi katlayın.</p>
+            <div class="cta-buttons-large">
+                <a href="#" class="btn btn-large btn-white">Google Play'den İndir</a>
+                <a href="https://wa.me/905324728428?text=Merhaba,%20Rota%2034%20demo%20talep%20etmek%20istiyorum" class="btn btn-large btn-secondary" target="_blank">Demo Talep Et</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>SahadanSoft</h3>
+                <p>Fortune 500 standartlarında saha yönetimi çözümleri.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Sayfalar</h4>
+                <a href="index.html">Ana Sayfa</a>
+                <a href="features.html">Özellikler</a>
+                <a href="privacy.html">Gizlilik</a>
+                <a href="contact.html">İletişim</a>
+            </div>
+            <div class="footer-section">
+                <h4>İletişim</h4>
+                <a href="mailto:support@rota34.app">support@rota34.app</a>
+                <a href="tel:+905324728428">+90 532 472 84 28</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 SahadanSoft. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
