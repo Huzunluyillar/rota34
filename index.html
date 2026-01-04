@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rota 34 - Saha Ziyaret Yönetimi</title>
+    <meta name="description" content="Rota 34 ile müşteri ziyaretlerinizi optimize edin. Akıllı rota planlama, konum takibi ve ziyaret yönetimi.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: #1a1a1a;
+            overflow-x: hidden;
+            background: #ffffff;
+        }
+
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            letter-spacing: -1px;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+
+        .features {
+            padding: 6rem 2rem;
+            background: #f8f9fa;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 4rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .permissions {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .permission-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .permission-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .permission-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .permission-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .permission-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .permission-content p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .target-audience {
+            padding: 6rem 2rem;
+            background: #f8f9fa;
+        }
+
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .audience-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .audience-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .audience-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .audience-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .company-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .footer-links {
+            margin: 2rem 0;
+        }
+
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            opacity: 0.6;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1.2rem;
+            }
+
+            .description {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="logo">Rota 34 📍</div>
+                <div class="tagline">Akıllı Saha Ziyaret Yönetimi</div>
+                <p class="description">
+                    Müşteri ziyaretlerinizi optimize edin, rotalarınızı planlayın ve verimliliğinizi artırın. 
+                    Saha satış, kargo dağıtım ve kapı kapı teslimat için tasarlandı.
+                </p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-primary">📥 APK İndir</a>
+                    <a href="#features" class="btn btn-secondary">🔍 Özellikleri Keşfet</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Güçlü Özellikler</h2>
+            <p class="section-subtitle">Sahada işinizi kolaylaştıran araçlar</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🗺️</div>
+                    <h3 class="feature-title">Akıllı Rota Planlama</h3>
+                    <p class="feature-description">
+                        Yapay zeka destekli algoritma ile en verimli rotayı otomatik oluşturun. 
+                        Zaman ve yakıt tasarrufu yapın.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📍</div>
+                    <h3 class="feature-title">Gerçek Zamanlı Konum</h3>
+                    <p class="feature-description">
+                        Müşteri adreslerini haritada görüntüleyin. GPS navigasyon ile 
+                        doğrudan hedefe ulaşın.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3 class="feature-title">QR & OCR Okuma</h3>
+                    <p class="feature-description">
+                        QR kod ile hızlı adres ekleyin. Kargo poşetindeki adresleri 
+                        kamera ile tarayarak otomatik kaydedin.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Detaylı Raporlar</h3>
+                    <p class="feature-description">
+                        Günlük, haftalık ve aylık performans raporları alın. 
+                        Verimliliğinizi analiz edin.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🗺️</div>
+                    <h3 class="feature-title">Google Maps Entegrasyonu</h3>
+                    <p class="feature-description">
+                        Google Maps navigasyon desteği ile güvenilir harita 
+                        ve yönlendirme. İnternet bağlantısı gerektirir.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <h3 class="feature-title">Yedekleme & Geri Yükleme</h3>
+                    <p class="feature-description">
+                        Tüm rota bilgilerinizi yedekleyin ve istediğiniz zaman 
+                        içe aktarın. Veri kaybı endişesi olmadan güvenle kullanın.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="permissions">
+        <div class="container">
+            <div class="permission-card">
+                <h2 class="permission-title">🔐 Uygulama İzinleri Hakkında</h2>
+                
+                <div class="permission-item">
+                    <div class="permission-icon">📍</div>
+                    <div class="permission-content">
+                        <h3>Konum İzni</h3>
+                        <p>
+                            Müşteri adreslerine navigasyon yapabilmek, ziyaret konumlarını kaydetmek 
+                            ve en yakın müşterileri gösterebilmek için konum erişimi gereklidir. 
+                            GPS veriniz yalnızca cihazınızda saklanır ve isteğe bağlı olarak 
+                            rota optimizasyonu için kullanılır.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="permission-item">
+                    <div class="permission-icon">📸</div>
+                    <div class="permission-content">
+                        <h3>Kamera İzni</h3>
+                        <p>
+                            <strong>QR Kod Okuma:</strong> Müşteri QR kodlarını tarayarak anında adres ekleyebilirsiniz.
+                            <br><br>
+                            <strong>OCR (Adres Tarama):</strong> Kargo poşeti, fatura veya herhangi bir belgede 
+                            yazan adresleri kamera ile tarayarak otomatik olarak sisteme kaydedebilirsiniz. 
+                            Manuel yazma zahmetinden kurtulun, hata oranını sıfıra indirin.
+                            <br><br>
+                            Kamera yalnızca QR kod ve metin okuma için kullanılır, hiçbir fotoğraf saklanmaz.
+                        </p>
+                    </div>
+                </div>
+
+                <p style="text-align: center; margin-top: 2rem; opacity: 0.9;">
+                    ℹ️ Tüm izinler isteğe bağlıdır ve istediğiniz zaman cihaz ayarlarından yönetebilirsiniz. 
+                    Gizliliğiniz bizim için önemlidir.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="target-audience">
+        <div class="container">
+            <h2 class="section-title">Kimler Kullanabilir?</h2>
+            <p class="section-subtitle">Her saha çalışanı için tasarlandı</p>
+            
+            <div class="audience-grid">
+                <div class="audience-card">
+                    <div class="audience-icon">👔</div>
+                    <h3 class="audience-title">Saha Satış Elemanları</h3>
+                </div>
+
+                <div class="audience-card">
+                    <div class="audience-icon">📦</div>
+                    <h3 class="audience-title">Kargo Dağıtım</h3>
+                </div>
+
+                <div class="audience-card">
+                    <div class="audience-icon">🚚</div>
+                    <h3 class="audience-title">Lojistik Firmaları</h3>
+                </div>
+
+                <div class="audience-card">
+                    <div class="audience-icon">🏪</div>
+                    <h3 class="audience-title">Bayii Ziyaretleri</h3>
+                </div>
+
+                <div class="audience-card">
+                    <div class="audience-icon">🚪</div>
+                    <h3 class="audience-title">Kapı Kapı Teslimat</h3>
+                </div>
+
+                <div class="audience-card">
+                    <div class="audience-icon">🏢</div>
+                    <h3 class="audience-title">Kurumsal Satış Ekipleri</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="company-name">SahadanSoft</div>
+            <p>Saha çalışanları için profesyonel çözümler</p>
+            
+            <div class="footer-links">
+                <a href="mailto:support@rota34.app" class="footer-link">📧 support@rota34.app</a>
+            </div>
+
+            <div class="copyright">
+                © 2026 SahadanSoft. Tüm hakları saklıdır.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .audience-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease-out';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
