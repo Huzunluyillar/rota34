@@ -707,18 +707,36 @@
 
     <script>
         // Login/Logout Functions
-        function login() {
-            const username = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
+        async function login(event) {
+    if(event) event.preventDefault();
 
-            // Demo için basit kontrol (Gerçek uygulamada sunucu tarafında doğrulama yapılmalı)
-            if (username === 'admin' && password === 'admin123') {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'flex';
-            } else {
-                document.getElementById('loginError').style.display = 'block';
-            }
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+    const errorMsg = document.getElementById('loginError');
+
+    try {
+        // Oluşturduğumuz API'ye istek atıyoruz
+        const response = await fetch('/api/check-auth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'flex';
+            window.scrollTo(0, 0);
+        } else {
+            errorMsg.style.display = 'block';
+            errorMsg.innerText = "Kullanıcı adı veya şifre hatalı!";
         }
+    } catch (error) {
+        console.error("Hata:", error);
+        alert("Bir hata oluştu, lütfen sonra tekrar deneyin.");
+    }
+}
 
         function logout() {
             if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
