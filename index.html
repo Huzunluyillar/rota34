@@ -26,7 +26,7 @@
         <div class="particles" id="particles"></div>
         <div class="hero-content">
             <div class="hero-text">
-                <h1>Sahayı Akıllı Yönetin, Verimliliği Katla</h1>
+                <h1>Sahayı Akıllı Yönetin, Verimliliği Katlayın</h1>
                 <p class="subtitle">
                     Fortune 500 standartlarında saha yönetimi. Yapay zeka destekli rota optimizasyonu, 
                     gerçek zamanlı takip ve detaylı analizlerle işinizi bir üst seviyeye taşıyın.
@@ -49,6 +49,10 @@
                     <a href="#" class="btn btn-primary">
                         <span>🚀</span>
                         <span>Hemen İndir</span>
+                    </a>
+                    <a id="betaTestBtn" href="https://play.google.com/apps/testing/com.baskaya.route34" class="btn btn-secondary" target="_blank" style="display: none;">
+                        <span>🧪</span>
+                        <span>Beta Test Et</span>
                     </a>
                     <a href="features.html" class="btn btn-secondary">
                         <span>▶</span>
@@ -113,6 +117,34 @@
                 nav.classList.remove('scrolled');
             }
         });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        async function checkTestButton() {
+            try {
+                const supabase = window.supabase.createClient(
+                    'https://zyjtcywneublnmssiqhm.supabase.co',
+                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5anRjeXduZXVibG5tc3NpcWhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MTgxMzksImV4cCI6MjA4MzI5NDEzOX0.7o0w5i2VJuzzK0QfEK1l3WMReBHZyehdY0_qZQEuV9U'
+                );
+                
+                const { data, error } = await supabase
+                    .from('site_settings')
+                    .select('*')
+                    .eq('key', 'test_link')
+                    .single();
+                
+                if (data && data.value && data.value.enabled) {
+                    const btn = document.getElementById('betaTestBtn');
+                    btn.href = data.value.link;
+                    btn.style.display = 'inline-flex';
+                }
+            } catch (error) {
+                console.log('Test butonu kontrolü:', error);
+            }
+        }
+        
+        checkTestButton();
     </script>
 </body>
 </html>

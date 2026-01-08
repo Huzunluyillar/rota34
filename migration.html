@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Özellik Taşıma - Rota 34</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0F2027 0%, #203A43 50%, #2C5364 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #0F2027;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .info-box strong {
+            color: #1976d2;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .features-list {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .feature-item {
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            background: white;
+            border-radius: 8px;
+            border-left: 3px solid #FF6B35;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .feature-content h4 {
+            color: #0F2027;
+            margin-bottom: 0.3rem;
+        }
+
+        .feature-content p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF6B35, #F77F00);
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.5);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .status-message {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-loading {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #FF6B35, #F77F00);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .back-link a {
+            color: #FF6B35;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Özellik Taşıma Aracı</h1>
+        <p class="subtitle">Ana sayfanızdaki mevcut özellikleri admin panele aktarın</p>
+
+        <div class="info-box">
+            <strong>ℹ️ Bu araç ne yapıyor?</strong>
+            <p>Ana sitenizde (features.html) bulunan 12 özelliği Supabase veritabanına aktarır. Böylece bunları admin panelden düzenleyebilirsiniz.</p>
+            <p style="margin-top: 0.5rem;"><strong>Önemli:</strong> Bu işlem sadece bir kez yapılmalıdır!</p>
+        </div>
+
+        <div id="statusMessage" class="status-message"></div>
+        <div id="progressBar" class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+        </div>
+
+        <div class="features-list">
+            <h3 style="margin-bottom: 1rem; color: #0F2027;">📋 Aktarılacak Özellikler (12 adet)</h3>
+            
+            <div class="feature-item">
+                <div class="feature-icon">🗺️</div>
+                <div class="feature-content">
+                    <h4>Haritaya Dokunarak Müşteri Ekle</h4>
+                    <p>Harita üzerinde istediğiniz konuma dokunun, müşterinizi anında ekleyin.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon">📱</div>
+                <div class="feature-content">
+                    <h4>QR Kod ile Anında Ekleme</h4>
+                    <p>Müşteri QR kodunu tarayın, tüm bilgiler otomatik olarak sisteme aktarılsın.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon">✏️</div>
+                <div class="feature-content">
+                    <h4>Manuel Adres Girişi</h4>
+                    <p>Klasik yöntem: İstediğiniz müşteri bilgilerini manuel olarak girin.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-content">
+                    <h4>Otomatik Adres Tanıma</h4>
+                    <p>Akıllı algoritma ile adres bilgilerini otomatik olarak tanır ve kaydeder.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon">📸</div>
+                <div class="feature-content">
+                    <h4>Kamera ile OCR Okuma</h4>
+                    <p>Kameranızla tarayın, adres bilgileri otomatik olarak eklensin.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon">📄</div>
+                <div class="feature-content">
+                    <h4>WhatsApp ile Rota Paylaşımı</h4>
+                    <p>Hazırladığınız rotayı tek tıkla WhatsApp üzerinden paylaşın.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon">📥</div>
+                <div class="feature-content">
+                    <h4>Tek Tık ile İçe Aktarma</h4>
+                    <p>Paylaşılan rotayı tek tıkla kendi uygulamanıza aktarın.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon">📊</div>
+                <div class="feature-content">
+                    <h4>Detaylı Raporlama Sistemi</h4>
+                    <p>Günlük, haftalık, aylık ve yıllık performans raporları.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon">⏸️</div>
+                <div class="feature-content">
+                    <h4>Geçici Pasife Alma</h4>
+                    <p>Müşterinizi geçici olarak pasife alın.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon">🗺️</div>
+                <div class="feature-content">
+                    <h4>Güzergah Önizleme</h4>
+                    <p>Ziyarete başlamadan önce tüm rotanızı harita üzerinde görün.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon">🎯</div>
+                <div class="feature-content">
+                    <h4>Akıllı Komşu Sıralama</h4>
+                    <p>En yakından en uzağa otomatik numaralandırma.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon">📍</div>
+                <div class="feature-content">
+                    <h4>Marker Yönetimi</h4>
+                    <p>Harita üzerinde marker'a dokunun, müşteri bilgileri açılsın.</p>
+                </div>
+            </div>
+        </div>
+
+        <button id="migrateBtn" class="btn btn-primary" onclick="migrateFeatures()">
+            <span>🚀</span>
+            <span>Özellikleri Supabase'e Aktar</span>
+        </button>
+
+        <div class="back-link">
+            <a href="features-management.html">← Admin Panele Dön</a>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://zyjtcywneublnmssiqhm.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5anRjeXduZXVibG5tc3NpcWhtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NzcxODEzOSwiZXhwIjoyMDgzMjk0MTM5fQ.FGbUjKbRsd0GQXeJD6-MM6VfVsFGt2CHDrjwiKE8EYA';
+        
+        let supabaseClient;
+
+        // Mevcut özellikler
+        const existingFeatures = [
+            {
+                id: Date.now() + 1,
+                icon: '🗺️',
+                title: 'Haritaya Dokunarak Müşteri Ekle',
+                description: 'Harita üzerinde istediğiniz konuma dokunun, müşterinizi anında ekleyin. Hızlı, basit ve sezgisel kullanım.',
+                media: null
+            },
+            {
+                id: Date.now() + 2,
+                icon: '📱',
+                title: 'QR Kod ile Anında Ekleme',
+                description: 'Müşteri QR kodunu tarayın, tüm bilgiler otomatik olarak sisteme aktarılsın. Zaman kaybı yok, hata riski sıfır.',
+                media: null
+            },
+            {
+                id: Date.now() + 3,
+                icon: '✏️',
+                title: 'Manuel Adres Girişi',
+                description: 'Klasik yöntem: İstediğiniz müşteri bilgilerini manuel olarak girin, tam kontrol sizde.',
+                media: null
+            },
+            {
+                id: Date.now() + 4,
+                icon: '🤖',
+                title: 'Otomatik Adres Tanıma',
+                description: 'Akıllı algoritma ile adres bilgilerini otomatik olarak tanır ve doğru formatta kaydeder.',
+                media: null
+            },
+            {
+                id: Date.now() + 5,
+                icon: '📸',
+                title: 'Kamera ile OCR Okuma',
+                description: 'Kargo poşeti, fatura, kartvizit - ne olursa olsun! Kameranızla tarayın, adres bilgileri otomatik olarak eklensin.',
+                media: null
+            },
+            {
+                id: Date.now() + 6,
+                icon: '📄',
+                title: 'WhatsApp ile Rota Paylaşımı',
+                description: 'Hazırladığınız rotayı tek tıkla WhatsApp üzerinden paylaşın. Ekip çalışması hiç bu kadar kolay olmamıştı.',
+                media: null
+            },
+            {
+                id: Date.now() + 7,
+                icon: '📥',
+                title: 'Tek Tık ile İçe Aktarma',
+                description: 'Paylaşılan rotayı tek tıkla kendi uygulamanıza aktarın. Anında işe koyulun.',
+                media: null
+            },
+            {
+                id: Date.now() + 8,
+                icon: '📊',
+                title: 'Detaylı Raporlama Sistemi',
+                description: 'Günlük, haftalık, aylık ve yıllık performans raporları. Başarı oranlarınızı takip edin.',
+                media: null
+            },
+            {
+                id: Date.now() + 9,
+                icon: '⏸️',
+                title: 'Geçici Pasife Alma',
+                description: 'Müşterinizi geçici olarak pasife alın. Ziyaret rotasına dahil edilmez, raporlarınızı etkilemez.',
+                media: null
+            },
+            {
+                id: Date.now() + 10,
+                icon: '🗺️',
+                title: 'Güzergah Önizleme',
+                description: 'Ziyarete başlamadan önce tüm rotanızı harita üzerinde görün.',
+                media: null
+            },
+            {
+                id: Date.now() + 11,
+                icon: '🎯',
+                title: 'Akıllı Komşu Sıralama',
+                description: 'En yakından en uzağa otomatik numaralandırma. Her müşteriye en verimli sırayla gidin.',
+                media: null
+            },
+            {
+                id: Date.now() + 12,
+                icon: '📍',
+                title: 'Marker Yönetimi',
+                description: 'Harita üzerinde marker\'a dokunun, müşteri bilgileri açılsın. Uzun basarak sürükleyin, konumunu değiştirin.',
+                media: null
+            }
+        ];
+
+        // Supabase'i başlat
+        window.addEventListener('DOMContentLoaded', () => {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            console.log('Supabase bağlandı');
+        });
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.textContent = message;
+            statusDiv.className = `status-message status-${type}`;
+            statusDiv.style.display = 'block';
+        }
+
+        function updateProgress(percent) {
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
+            progressBar.style.display = 'block';
+            progressFill.style.width = percent + '%';
+        }
+
+        async function migrateFeatures() {
+            const btn = document.getElementById('migrateBtn');
+            
+            // Onay al
+            if (!confirm('12 özelliği Supabase\'e aktarmak istediğinize emin misiniz?')) {
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span><span>Aktarılıyor...</span>';
+            
+            showStatus('⏳ Özellikler aktarılıyor...', 'loading');
+            updateProgress(10);
+
+            try {
+                console.log('Migration başladı:', existingFeatures);
+
+                // Mevcut özellikleri kontrol et
+                const { data: existing, error: checkError } = await supabaseClient
+                    .from('site_settings')
+                    .select('*')
+                    .eq('key', 'features')
+                    .single();
+
+                if (checkError && checkError.code !== 'PGRST116') {
+                    throw checkError;
+                }
+
+                updateProgress(30);
+
+                // Eğer zaten özellikler varsa uyar
+                if (existing && existing.value && existing.value.features && existing.value.features.length > 0) {
+                    const overwrite = confirm(`Uyarı: Veritabanında zaten ${existing.value.features.length} özellik var. Üzerine yazmak istediğinize emin misiniz?`);
+                    if (!overwrite) {
+                        btn.disabled = false;
+                        btn.innerHTML = '<span>🚀</span><span>Özellikleri Supabase\'e Aktar</span>';
+                        showStatus('❌ İşlem iptal edildi.', 'error');
+                        updateProgress(0);
+                        document.getElementById('progressBar').style.display = 'none';
+                        return;
+                    }
+                }
+
+                updateProgress(50);
+
+                // Özellikleri Supabase'e kaydet
+                const { data, error } = await supabaseClient
+                    .from('site_settings')
+                    .upsert({
+                        key: 'features',
+                        value: { features: existingFeatures },
+                        updated_at: new Date().toISOString()
+                    }, {
+                        onConflict: 'key'
+                    });
+
+                updateProgress(80);
+
+                if (error) {
+                    throw error;
+                }
+
+                updateProgress(100);
+
+                console.log('Migration başarılı:', data);
+
+                btn.innerHTML = '<span>✅</span><span>Başarıyla Aktarıldı!</span>';
+                btn.className = 'btn btn-success';
+                
+                showStatus('✅ 12 özellik başarıyla Supabase\'e aktarıldı! Artık admin panelden düzenleyebilirsiniz.', 'success');
+
+                // 3 saniye sonra yönlendir
+                setTimeout(() => {
+                    window.location.href = 'features-management.html';
+                }, 3000);
+
+            } catch (error) {
+                console.error('Migration hatası:', error);
+                showStatus('❌ Hata: ' + error.message, 'error');
+                
+                btn.disabled = false;
+                btn.innerHTML = '<span>🚀</span><span>Tekrar Dene</span>';
+                updateProgress(0);
+                document.getElementById('progressBar').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

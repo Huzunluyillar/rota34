@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logo Yönetimi - Rota 34 Admin</title>
     <link rel="stylesheet" href="admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div class="admin-wrapper">
@@ -36,8 +37,8 @@
                 <a href="homepage.html" class="menu-item">
                     <span>🏠</span> Ana Sayfa
                 </a>
-                <a href="features-page.html" class="menu-item">
-                    <span>⭐</span> Özellikler Sayfası
+                <a href="features-management.html" class="menu-item">
+                    <span>⭐</span> Özellikler
                 </a>
                 <a href="contact-page.html" class="menu-item">
                     <span>📞</span> İletişim Sayfası
@@ -54,44 +55,43 @@
                 <button class="btn-logout" onclick="logout()">Çıkış Yap</button>
             </div>
 
-            <div id="successMsg" class="success-msg"></div>
+            <div id="successMsg" class="success-msg" style="display: none;"></div>
+            <div id="loadingMsg" class="success-msg" style="display: none; background: #fff3cd; color: #856404;">⏳ Yükleniyor...</div>
 
             <div class="card">
                 <h2 class="card-title">📝 Logo Metni</h2>
                 <div class="form-group">
                     <label>Logo Yazısı</label>
-                    <input type="text" id="logoText" value="Rota 34" placeholder="Rota 34">
+                    <input type="text" id="logoText" placeholder="Rota 34">
                     <small style="color: #999;">Logo yanında görünecek metin</small>
                 </div>
-                <button class="btn btn-primary" onclick="saveLogoText()">💾 Metni Kaydet</button>
+                <button class="btn btn-primary" onclick="saveLogo()">💾 Kaydet</button>
             </div>
 
             <div class="card">
                 <h2 class="card-title">🎨 Logo İkonu</h2>
                 <p style="color: #666; margin-bottom: 1.5rem;">
-                    Logo için bir emoji seçin veya kendi SVG kodunuzu ekleyin
+                    Logo için bir emoji seçin
                 </p>
                 
                 <div class="form-group">
                     <label>Emoji Seçimi (Hızlı)</label>
                     <div style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
-                        <button onclick="selectEmoji('🎯')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">🎯</button>
-                        <button onclick="selectEmoji('🚀')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">🚀</button>
-                        <button onclick="selectEmoji('⭐')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">⭐</button>
-                        <button onclick="selectEmoji('🔥')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">🔥</button>
-                        <button onclick="selectEmoji('💎')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">💎</button>
-                        <button onclick="selectEmoji('🎪')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">🎪</button>
-                        <button onclick="selectEmoji('🌟')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">🌟</button>
-                        <button onclick="selectEmoji('💫')" style="font-size: 2rem; padding: 0.5rem; border: 2px solid #eee; border-radius: 8px; cursor: pointer; background: white;">💫</button>
+                        <button type="button" onclick="selectEmoji('🎯')" class="emoji-btn">🎯</button>
+                        <button type="button" onclick="selectEmoji('🚀')" class="emoji-btn">🚀</button>
+                        <button type="button" onclick="selectEmoji('⭐')" class="emoji-btn">⭐</button>
+                        <button type="button" onclick="selectEmoji('🔥')" class="emoji-btn">🔥</button>
+                        <button type="button" onclick="selectEmoji('💎')" class="emoji-btn">💎</button>
+                        <button type="button" onclick="selectEmoji('🎪')" class="emoji-btn">🎪</button>
+                        <button type="button" onclick="selectEmoji('🌟')" class="emoji-btn">🌟</button>
+                        <button type="button" onclick="selectEmoji('💫')" class="emoji-btn">💫</button>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Veya Özel Emoji</label>
-                    <input type="text" id="customEmoji" placeholder="🎯" maxlength="2">
+                    <input type="text" id="logoEmoji" placeholder="🎯" maxlength="2">
                 </div>
-
-                <button class="btn btn-primary" onclick="saveLogo()">💾 Logo Kaydet</button>
             </div>
 
             <div class="card">
@@ -116,39 +116,172 @@
 
     <script src="admin.js"></script>
     <script>
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://zyjtcywneublnmssiqhm.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5anRjeXduZXVibG5tc3NpcWhtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NzcxODEzOSwiZXhwIjoyMDgzMjk0MTM5fQ.FGbUjKbRsd0GQXeJD6-MM6VfVsFGt2CHDrjwiKE8EYA';
+        
+        let supabaseClient;
+
+        // Sayfa yüklendiğinde
+        window.addEventListener('DOMContentLoaded', async () => {
+            console.log('Logo yönetimi yüklendi');
+            
+            // Supabase başlat
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            console.log('✅ Supabase bağlandı');
+            
+            // Logo bilgilerini yükle
+            await loadLogo();
+        });
+
+        // Emoji seçimi
         function selectEmoji(emoji) {
-            document.getElementById('customEmoji').value = emoji;
+            document.getElementById('logoEmoji').value = emoji;
             document.getElementById('logoPreview').textContent = emoji;
+            
+            // Tüm emoji butonlarından seçimi kaldır
+            document.querySelectorAll('.emoji-btn').forEach(btn => {
+                btn.style.borderColor = '#eee';
+                btn.style.background = 'white';
+            });
+            
+            // Seçili butonu işaretle
+            event.target.style.borderColor = '#FF6B35';
+            event.target.style.background = '#fff5f2';
         }
 
-        function saveLogoText() {
-            const text = document.getElementById('logoText').value;
-            saveData('logoText', text);
-            document.getElementById('textPreview').textContent = text;
-            showSuccess('Logo metni kaydedildi!');
-        }
+        // Logo verilerini Supabase'den yükle
+        async function loadLogo() {
+            const loadingMsg = document.getElementById('loadingMsg');
+            loadingMsg.style.display = 'block';
+            
+            try {
+                console.log('📡 Logo verileri yükleniyor...');
+                
+                const { data, error } = await supabaseClient
+                    .from('site_settings')
+                    .select('*')
+                    .eq('key', 'logo')
+                    .single();
 
-        function saveLogo() {
-            const emoji = document.getElementById('customEmoji').value;
-            if (emoji) {
-                saveData('logoEmoji', emoji);
-                document.getElementById('logoPreview').textContent = emoji;
-                showSuccess('Logo kaydedildi!');
-            } else {
-                alert('Lütfen bir emoji seçin veya girin!');
+                if (error && error.code !== 'PGRST116') {
+                    throw error;
+                }
+
+                console.log('📦 Supabase yanıtı:', data);
+
+                if (data && data.value) {
+                    const logo = data.value;
+                    document.getElementById('logoText').value = logo.text || 'Rota 34';
+                    document.getElementById('logoEmoji').value = logo.emoji || '🎯';
+                    updatePreview();
+                    console.log('✅ Logo yüklendi');
+                } else {
+                    console.log('⚠️ Varsayılan logo kullanılıyor');
+                    document.getElementById('logoText').value = 'Rota 34';
+                    document.getElementById('logoEmoji').value = '🎯';
+                    updatePreview();
+                }
+
+            } catch (error) {
+                console.error('❌ Logo yükleme hatası:', error);
+                showMessage('Hata: ' + error.message, 'error');
+            } finally {
+                loadingMsg.style.display = 'none';
             }
         }
 
-        // Sayfa yüklendiğinde kaydedilmiş logoyu yükle
-        window.addEventListener('load', () => {
-            const savedText = getData('logoText', 'Rota 34');
-            const savedEmoji = getData('logoEmoji', '🎯');
+        // Logo kaydet
+        async function saveLogo() {
+            const text = document.getElementById('logoText').value.trim();
+            const emoji = document.getElementById('logoEmoji').value.trim();
+
+            if (!text || !emoji) {
+                alert('Lütfen logo metni ve emoji girin!');
+                return;
+            }
+
+            const loadingMsg = document.getElementById('loadingMsg');
+            loadingMsg.style.display = 'block';
+
+            try {
+                console.log('💾 Logo kaydediliyor...', { text, emoji });
+
+                const { data, error } = await supabaseClient
+                    .from('site_settings')
+                    .upsert({
+                        key: 'logo',
+                        value: { text, emoji },
+                        updated_at: new Date().toISOString()
+                    }, {
+                        onConflict: 'key'
+                    });
+
+                if (error) {
+                    throw error;
+                }
+
+                console.log('✅ Logo kaydedildi:', data);
+                updatePreview();
+                showMessage('✅ Logo başarıyla kaydedildi!', 'success');
+
+            } catch (error) {
+                console.error('❌ Kaydetme hatası:', error);
+                showMessage('❌ Hata: ' + error.message, 'error');
+            } finally {
+                loadingMsg.style.display = 'none';
+            }
+        }
+
+        // Önizlemeyi güncelle
+        function updatePreview() {
+            const text = document.getElementById('logoText').value;
+            const emoji = document.getElementById('logoEmoji').value;
             
-            document.getElementById('logoText').value = savedText;
-            document.getElementById('customEmoji').value = savedEmoji;
-            document.getElementById('logoPreview').textContent = savedEmoji;
-            document.getElementById('textPreview').textContent = savedText;
-        });
+            document.getElementById('logoPreview').textContent = emoji;
+            document.getElementById('textPreview').textContent = text;
+        }
+
+        // Mesaj göster
+        function showMessage(message, type) {
+            const successMsg = document.getElementById('successMsg');
+            successMsg.textContent = message;
+            successMsg.style.display = 'block';
+            successMsg.style.background = type === 'success' ? '#d4edda' : '#f8d7da';
+            successMsg.style.color = type === 'success' ? '#155724' : '#721c24';
+            
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+        }
+
+        // Input değişikliklerinde önizlemeyi güncelle
+        document.getElementById('logoText').addEventListener('input', updatePreview);
+        document.getElementById('logoEmoji').addEventListener('input', updatePreview);
     </script>
+
+    <style>
+        .emoji-btn {
+            font-size: 2rem;
+            padding: 0.5rem;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            cursor: pointer;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .emoji-btn:hover {
+            transform: scale(1.1);
+            border-color: #FF6B35;
+        }
+
+        .success-msg {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+    </style>
 </body>
 </html>

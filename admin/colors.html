@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Renk Yönetimi - Rota 34 Admin</title>
     <link rel="stylesheet" href="admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div class="admin-wrapper">
-        <!-- Sidebar (Aynı) -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-logo">
@@ -37,8 +37,8 @@
                 <a href="homepage.html" class="menu-item">
                     <span>🏠</span> Ana Sayfa
                 </a>
-                <a href="features-page.html" class="menu-item">
-                    <span>⭐</span> Özellikler Sayfası
+                <a href="features-management.html" class="menu-item">
+                    <span>⭐</span> Özellikler
                 </a>
                 <a href="contact-page.html" class="menu-item">
                     <span>📞</span> İletişim Sayfası
@@ -49,14 +49,14 @@
             </nav>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
             <div class="top-bar">
                 <h1>🎨 Renkler & Tema</h1>
                 <button class="btn-logout" onclick="logout()">Çıkış Yap</button>
             </div>
 
-            <div id="successMsg" class="success-msg"></div>
+            <div id="successMsg" class="success-msg" style="display: none;"></div>
+            <div id="loadingMsg" class="success-msg" style="display: none; background: #fff3cd; color: #856404;">⏳ Yükleniyor...</div>
 
             <div class="card">
                 <h2 class="card-title">🎨 Ana Renk Paleti</h2>
@@ -133,71 +133,217 @@
 
     <script src="admin.js"></script>
     <script>
-        // Renk inputlarını senkronize et
-        ['primary', 'secondary', 'accent', 'dark'].forEach(color => {
-            const colorInput = document.getElementById(color + 'Color');
-            const textInput = document.getElementById(color + 'Text');
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://zyjtcywneublnmssiqhm.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5anRjeXduZXVibG5tc3NpcWhtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NzcxODEzOSwiZXhwIjoyMDgzMjk0MTM5fQ.FGbUjKbRsd0GQXeJD6-MM6VfVsFGt2CHDrjwiKE8EYA';
+        
+        let supabaseClient;
+
+        // Sayfa yüklendiğinde
+        window.addEventListener('DOMContentLoaded', async () => {
+            console.log('Renk yönetimi yüklendi');
             
-            colorInput.addEventListener('input', (e) => {
-                textInput.value = e.target.value;
-            });
+            // Supabase başlat
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            console.log('✅ Supabase bağlandı');
             
-            textInput.addEventListener('input', (e) => {
-                if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
-                    colorInput.value = e.target.value;
-                }
-            });
+            // Renkleri yükle
+            await loadColors();
+            
+            // Renk inputlarını senkronize et
+            syncColorInputs();
         });
 
+        // Renk inputlarını senkronize et
+        function syncColorInputs() {
+            ['primary', 'secondary', 'accent', 'dark'].forEach(color => {
+                const colorInput = document.getElementById(color + 'Color');
+                const textInput = document.getElementById(color + 'Text');
+                
+                colorInput.addEventListener('input', (e) => {
+                    textInput.value = e.target.value;
+                });
+                
+                textInput.addEventListener('input', (e) => {
+                    if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+                        colorInput.value = e.target.value;
+                    }
+                });
+            });
+        }
+
+        // Renkleri Supabase'den yükle
+        async function loadColors() {
+            const loadingMsg = document.getElementById('loadingMsg');
+            loadingMsg.style.display = 'block';
+            
+            try {
+                console.log('📡 Renkler yükleniyor...');
+                
+                const { data, error } = await supabaseClient
+                    .from('site_settings')
+                    .select('*')
+                    .eq('key', 'colors')
+                    .single();
+
+                if (error && error.code !== 'PGRST116') {
+                    throw error;
+                }
+
+                console.log('📦 Supabase yanıtı:', data);
+
+                if (data && data.value) {
+                    const colors = data.value;
+                    document.getElementById('primaryColor').value = colors.primary || '#FF6B35';
+                    document.getElementById('primaryText').value = colors.primary || '#FF6B35';
+                    document.getElementById('secondaryColor').value = colors.secondary || '#0F2027';
+                    document.getElementById('secondaryText').value = colors.secondary || '#0F2027';
+                    document.getElementById('accentColor').value = colors.accent || '#F77F00';
+                    document.getElementById('accentText').value = colors.accent || '#F77F00';
+                    document.getElementById('darkColor').value = colors.dark || '#1A1A2E';
+                    document.getElementById('darkText').value = colors.dark || '#1A1A2E';
+                    
+                    applyColorsToPreview(colors);
+                    console.log('✅ Renkler yüklendi');
+                } else {
+                    console.log('⚠️ Varsayılan renkler kullanılıyor');
+                    resetToDefaults();
+                }
+
+            } catch (error) {
+                console.error('❌ Renk yükleme hatası:', error);
+                showMessage('Hata: ' + error.message, 'error');
+                resetToDefaults();
+            } finally {
+                loadingMsg.style.display = 'none';
+            }
+        }
+
+        // Varsayılan renkleri ayarla
+        function resetToDefaults() {
+            const defaults = {
+                primary: '#FF6B35',
+                secondary: '#0F2027',
+                accent: '#F77F00',
+                dark: '#1A1A2E'
+            };
+            
+            document.getElementById('primaryColor').value = defaults.primary;
+            document.getElementById('primaryText').value = defaults.primary;
+            document.getElementById('secondaryColor').value = defaults.secondary;
+            document.getElementById('secondaryText').value = defaults.secondary;
+            document.getElementById('accentColor').value = defaults.accent;
+            document.getElementById('accentText').value = defaults.accent;
+            document.getElementById('darkColor').value = defaults.dark;
+            document.getElementById('darkText').value = defaults.dark;
+            
+            applyColorsToPreview(defaults);
+        }
+
+        // Renkleri önizlemeye uygula
+        function applyColorsToPreview(colors) {
+            document.documentElement.style.setProperty('--primary', colors.primary);
+            document.documentElement.style.setProperty('--secondary', colors.secondary);
+            document.documentElement.style.setProperty('--accent', colors.accent);
+            document.documentElement.style.setProperty('--dark', colors.dark);
+        }
+
         // Renkleri kaydet
-        function saveColors() {
+        async function saveColors() {
             const colors = {
                 primary: document.getElementById('primaryColor').value,
                 secondary: document.getElementById('secondaryColor').value,
                 accent: document.getElementById('accentColor').value,
                 dark: document.getElementById('darkColor').value
             };
-            
-            // CSS değişkenlerini güncelle
-            document.documentElement.style.setProperty('--primary', colors.primary);
-            document.documentElement.style.setProperty('--secondary', colors.secondary);
-            document.documentElement.style.setProperty('--accent', colors.accent);
-            document.documentElement.style.setProperty('--dark', colors.dark);
-            
-            // LocalStorage'a kaydet
-            saveData('colors', colors);
-            showSuccess('Renkler başarıyla kaydedildi!');
+
+            const loadingMsg = document.getElementById('loadingMsg');
+            loadingMsg.style.display = 'block';
+
+            try {
+                console.log('💾 Renkler kaydediliyor...', colors);
+
+                const { data, error } = await supabaseClient
+                    .from('site_settings')
+                    .upsert({
+                        key: 'colors',
+                        value: colors,
+                        updated_at: new Date().toISOString()
+                    }, {
+                        onConflict: 'key'
+                    });
+
+                if (error) {
+                    throw error;
+                }
+
+                console.log('✅ Renkler kaydedildi:', data);
+                applyColorsToPreview(colors);
+                showMessage('✅ Renkler başarıyla kaydedildi!', 'success');
+
+            } catch (error) {
+                console.error('❌ Kaydetme hatası:', error);
+                showMessage('❌ Hata: ' + error.message, 'error');
+            } finally {
+                loadingMsg.style.display = 'none';
+            }
         }
 
         // Varsayılan renklere dön
-        function resetColors() {
+        async function resetColors() {
             if (confirm('Renkleri varsayılan değerlere döndürmek istediğinizden emin misiniz?')) {
-                document.getElementById('primaryColor').value = '#FF6B35';
-                document.getElementById('primaryText').value = '#FF6B35';
-                document.getElementById('secondaryColor').value = '#0F2027';
-                document.getElementById('secondaryText').value = '#0F2027';
-                document.getElementById('accentColor').value = '#F77F00';
-                document.getElementById('accentText').value = '#F77F00';
-                document.getElementById('darkColor').value = '#1A1A2E';
-                document.getElementById('darkText').value = '#1A1A2E';
-                saveColors();
+                resetToDefaults();
+                await saveColors();
             }
         }
 
-        // Sayfa yüklendiğinde kaydedilmiş renkleri yükle
-        window.addEventListener('load', () => {
-            const savedColors = getData('colors');
-            if (savedColors) {
-                document.getElementById('primaryColor').value = savedColors.primary;
-                document.getElementById('primaryText').value = savedColors.primary;
-                document.getElementById('secondaryColor').value = savedColors.secondary;
-                document.getElementById('secondaryText').value = savedColors.secondary;
-                document.getElementById('accentColor').value = savedColors.accent;
-                document.getElementById('accentText').value = savedColors.accent;
-                document.getElementById('darkColor').value = savedColors.dark;
-                document.getElementById('darkText').value = savedColors.dark;
-            }
-        });
+        // Mesaj göster
+        function showMessage(message, type) {
+            const successMsg = document.getElementById('successMsg');
+            successMsg.textContent = message;
+            successMsg.style.display = 'block';
+            successMsg.style.background = type === 'success' ? '#d4edda' : '#f8d7da';
+            successMsg.style.color = type === 'success' ? '#155724' : '#721c24';
+            
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+        }
     </script>
+
+    <style>
+        .color-preview {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .color-preview input[type="color"] {
+            width: 60px;
+            height: 45px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .success-msg {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </body>
 </html>

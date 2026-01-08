@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Özellikler Yönetimi - Rota 34</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f6fa;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 { color: #0F2027; }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF6B35, #F77F00);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #0F2027;
+        }
+
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            min-height: 200px;
+        }
+
+        .feature-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            cursor: move;
+            transition: all 0.3s ease;
+            border-left: 4px solid #FF6B35;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .feature-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .feature-item.sortable-ghost {
+            opacity: 0.4;
+            background: #e9ecef;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .feature-content {
+            flex: 1;
+        }
+
+        .feature-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #0F2027;
+        }
+
+        .feature-content p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .feature-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .feature-actions button {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .emoji-picker {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .emoji-btn {
+            font-size: 2rem;
+            padding: 0.5rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            cursor: pointer;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .emoji-btn:hover {
+            transform: scale(1.2);
+            border-color: #FF6B35;
+        }
+
+        .emoji-btn.selected {
+            border-color: #FF6B35;
+            background: #fff5f2;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+        }
+
+        .media-upload {
+            border: 2px dashed #e1e8ed;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .media-upload:hover {
+            border-color: #FF6B35;
+            background: #fff5f2;
+        }
+
+        .media-preview {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .media-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .media-item img,
+        .media-item video {
+            display: block;
+            border-radius: 10px;
+        }
+
+        .media-item .remove-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .size-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .size-control input[type="range"] {
+            flex: 1;
+        }
+
+        .size-control span {
+            min-width: 60px;
+            text-align: center;
+            font-weight: 600;
+            color: #FF6B35;
+        }
+
+        .success-msg {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⭐ Özellikler Yönetimi</h1>
+            <button class="btn btn-secondary" onclick="window.location.href='admin_panel.html'">← Geri Dön</button>
+        </div>
+
+        <div id="successMsg" class="success-msg"></div>
+
+        <div class="grid">
+            <!-- Mevcut Özellikler -->
+            <div class="card">
+                <h2 class="card-title">📋 Mevcut Özellikler (<span id="featureCount">0</span>)</h2>
+                <p style="color: #666; margin-bottom: 1rem;">Sürükleyerek sıralama yapabilirsiniz</p>
+                <div id="featuresList" class="features-list">
+                    <div class="empty-state">Henüz özellik eklenmedi</div>
+                </div>
+            </div>
+
+            <!-- Yeni Özellik Ekle / Düzenle -->
+            <div class="card">
+                <h2 class="card-title" id="formTitle">➕ Yeni Özellik Ekle</h2>
+                
+                <form id="featureForm" onsubmit="handleSubmit(event)">
+                    <input type="hidden" id="featureId">
+                    
+                    <div class="form-group">
+                        <label>🎯 İkon Seç</label>
+                        <div class="emoji-picker" id="emojiPicker">
+                            <button type="button" class="emoji-btn" onclick="selectEmoji('🗺️')">🗺️</button>
+                            <button type="button" class="emoji-btn" onclick="selectEmoji('📱')">📱</button>
+                            <button type="button" class="emoji-btn" onclick="selectEmoji('✏️')">✏️</button>
+                            <button type="button" class="emoji-btn" onclick="selectEmoji('🤖')">🤖</button>
+                            <button type="button" class="emoji-btn" onclick="selectEmoji('📸')">📸</button>
+                            <button type="button" class="emoji-btn" onclick="selectEmoji('📄')">📄</button>
+                            <button type="button" class="emoji-btn" onclick="selectEmoji('🎯')">🎯</button>
+                            <button type="button" class="emoji-btn" onclick="selectEmoji('📊')">📊</button>
+                            <button type="button" class="emoji-btn" onclick="selectEmoji('⏸️')">⏸️</button>
+                            <button type="button" class="emoji-btn" onclick="selectEmoji('🔍')">🔍</button>
+                            <button type="button" class="emoji-btn" onclick="selectEmoji('📍')">📍</button>
+                            <button type="button" class="emoji-btn" onclick="selectEmoji('⭐')">⭐</button>
+                        </div>
+                        <input type="text" id="featureIcon" placeholder="veya emoji yazın" style="margin-top: 0.5rem;" maxlength="2" value="🎯">
+                    </div>
+
+                    <div class="form-group">
+                        <label>📝 Başlık *</label>
+                        <input type="text" id="featureTitle" placeholder="Örn: Haritaya Dokunarak Müşteri Ekle" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>📄 Açıklama *</label>
+                        <textarea id="featureDescription" placeholder="Özelliğin açıklaması..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>📷 Medya Ekle (Fotoğraf/Video - Opsiyonel)</label>
+                        <div class="media-upload" onclick="document.getElementById('mediaInput').click()">
+                            <p>📁 Tıklayarak dosya seçin</p>
+                            <small>Fotoğraf veya Video</small>
+                        </div>
+                        <input type="file" id="mediaInput" accept="image/*,video/*" style="display: none;" onchange="handleMediaUpload(event)">
+                        
+                        <div id="mediaPreview" class="media-preview"></div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem;">
+                        <button type="submit" class="btn btn-success" style="flex: 1;">💾 Kaydet</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">🔄 Temizle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global değişkenler
+        const SUPABASE_URL = 'https://zyjtcywneublnmssiqhm.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5anRjeXduZXVibG5tc3NpcWhtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NzcxODEzOSwiZXhwIjoyMDgzMjk0MTM5fQ.FGbUjKbRsd0GQXeJD6-MM6VfVsFGt2CHDrjwiKE8EYA';
+        
+        let supabaseClient;
+        let features = [];
+        let selectedEmoji = '🎯';
+        let currentMedia = null;
+        let mediaSize = 300;
+        let sortableInstance = null;
+
+        // Sayfa yüklendiğinde
+        window.addEventListener('DOMContentLoaded', async () => {
+            console.log('Sayfa yüklendi');
+            
+            // Supabase başlat
+            try {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                console.log('Supabase bağlandı');
+            } catch (error) {
+                console.error('Supabase bağlantı hatası:', error);
+                alert('Supabase bağlantısı kurulamadı!');
+                return;
+            }
+
+            // Özellikleri yükle
+            await loadFeatures();
+            
+            // İlk emoji seç
+            selectEmoji('🎯');
+        });
+
+        // Emoji seçimi
+        function selectEmoji(emoji) {
+            console.log('Emoji seçildi:', emoji);
+            selectedEmoji = emoji;
+            document.getElementById('featureIcon').value = emoji;
+            
+            // Tüm butonlardan selected kaldır
+            document.querySelectorAll('.emoji-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Seçili olan butonu işaretle
+            document.querySelectorAll('.emoji-btn').forEach(btn => {
+                if (btn.textContent.trim() === emoji) {
+                    btn.classList.add('selected');
+                }
+            });
+        }
+
+        // Medya yükleme
+        function handleMediaUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            console.log('Medya yükleniyor:', file.name);
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                currentMedia = {
+                    data: e.target.result,
+                    type: file.type.startsWith('video') ? 'video' : 'image',
+                    size: mediaSize
+                };
+                console.log('Medya yüklendi:', currentMedia.type);
+                displayMediaPreview();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Medya önizleme
+        function displayMediaPreview() {
+            const preview = document.getElementById('mediaPreview');
+            if (!currentMedia) {
+                preview.innerHTML = '';
+                return;
+            }
+
+            const mediaElement = currentMedia.type === 'video' 
+                ? `<video src="${currentMedia.data}" controls style="width: ${currentMedia.size}px; height: auto;"></video>`
+                : `<img src="${currentMedia.data}" style="width: ${currentMedia.size}px; height: auto;">`;
+
+            preview.innerHTML = `
+                <div class="media-item">
+                    ${mediaElement}
+                    <button type="button" class="remove-btn" onclick="removeMedia()">×</button>
+                </div>
+                <div class="size-control">
+                    <label>Boyut:</label>
+                    <input type="range" min="100" max="800" value="${currentMedia.size}" 
+                           oninput="updateMediaSize(this.value)">
+                    <span>${currentMedia.size}px</span>
+                </div>
+            `;
+        }
+
+        function updateMediaSize(size) {
+            mediaSize = parseInt(size);
+            if (currentMedia) {
+                currentMedia.size = mediaSize;
+                displayMediaPreview();
+            }
+        }
+
+        function removeMedia() {
+            currentMedia = null;
+            document.getElementById('mediaInput').value = '';
+            displayMediaPreview();
+        }
+
+        // Özellikleri yükle
+        async function loadFeatures() {
+            try {
+                console.log('Özellikler yükleniyor...');
+                
+                const { data, error } = await supabaseClient
+                    .from('site_settings')
+                    .select('*')
+                    .eq('key', 'features')
+                    .single();
+
+                if (error && error.code !== 'PGRST116') {
+                    console.error('Yükleme hatası:', error);
+                    throw error;
+                }
+
+                if (data && data.value && data.value.features) {
+                    features = data.value.features;
+                    console.log('Özellikler yüklendi:', features.length);
+                } else {
+                    features = [];
+                    console.log('Özellik bulunamadı, boş liste');
+                }
+
+                renderFeatures();
+                initSortable();
+            } catch (error) {
+                console.error('loadFeatures hatası:', error);
+                features = [];
+                renderFeatures();
+            }
+        }
+
+        // Özellikleri render et
+        function renderFeatures() {
+            const list = document.getElementById('featuresList');
+            document.getElementById('featureCount').textContent = features.length;
+            
+            if (features.length === 0) {
+                list.innerHTML = '<div class="empty-state">Henüz özellik eklenmedi</div>';
+                return;
+            }
+
+            list.innerHTML = features.map((feature, index) => `
+                <div class="feature-item" data-id="${feature.id}">
+                    <div class="feature-icon">${feature.icon}</div>
+                    <div class="feature-content">
+                        <h3>${feature.title}</h3>
+                        <p>${feature.description}</p>
+                        ${feature.media ? `<small style="color: #FF6B35;">📎 Medya: ${feature.media.type} (${feature.media.size}px)</small>` : ''}
+                    </div>
+                    <div class="feature-actions">
+                        <button type="button" class="btn btn-primary" onclick="editFeature(${index})">✏️</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteFeature(${index})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Sürükle-bırak
+        function initSortable() {
+            const list = document.getElementById('featuresList');
+            
+            if (sortableInstance) {
+                sortableInstance.destroy();
+            }
+
+            if (features.length === 0) return;
+
+            sortableInstance = new Sortable(list, {
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                onEnd: async (evt) => {
+                    const item = features.splice(evt.oldIndex, 1)[0];
+                    features.splice(evt.newIndex, 0, item);
+                    await saveFeaturesToSupabase();
+                    showSuccess('Sıralama kaydedildi!');
+                }
+            });
+        }
+
+        // Form submit
+        async function handleSubmit(event) {
+            event.preventDefault();
+            console.log('Form gönderiliyor...');
+
+            const id = document.getElementById('featureId').value;
+            const title = document.getElementById('featureTitle').value;
+            const description = document.getElementById('featureDescription').value;
+
+            console.log('Form değerleri:', { id, selectedEmoji, title, description, currentMedia });
+
+            const newFeature = {
+                id: id || Date.now(),
+                icon: selectedEmoji,
+                title: title,
+                description: description,
+                media: currentMedia
+            };
+
+            if (id) {
+                const index = features.findIndex(f => f.id == id);
+                features[index] = newFeature;
+                console.log('Özellik güncellendi');
+            } else {
+                features.push(newFeature);
+                console.log('Yeni özellik eklendi');
+            }
+
+            const saved = await saveFeaturesToSupabase();
+            if (saved) {
+                renderFeatures();
+                initSortable();
+                resetForm();
+                showSuccess('Özellik başarıyla kaydedildi!');
+            }
+        }
+
+        // Supabase'e kaydet
+        async function saveFeaturesToSupabase() {
+            try {
+                console.log('Kaydediliyor:', features);
+
+                const { data, error } = await supabaseClient
+                    .from('site_settings')
+                    .upsert({
+                        key: 'features',
+                        value: { features: features },
+                        updated_at: new Date().toISOString()
+                    }, {
+                        onConflict: 'key'
+                    });
+
+                if (error) {
+                    console.error('Kaydetme hatası:', error);
+                    alert('Kaydedilemedi! Hata: ' + error.message);
+                    return false;
+                }
+
+                console.log('Başarıyla kaydedildi');
+                return true;
+            } catch (error) {
+                console.error('saveFeaturesToSupabase hatası:', error);
+                alert('Kaydetme hatası: ' + error.message);
+                return false;
+            }
+        }
+
+        // Özellik düzenle
+        function editFeature(index) {
+            const feature = features[index];
+            console.log('Düzenleniyor:', feature);
+            
+            document.getElementById('formTitle').textContent = '✏️ Özellik Düzenle';
+            document.getElementById('featureId').value = feature.id;
+            document.getElementById('featureTitle').value = feature.title;
+            document.getElementById('featureDescription').value = feature.description;
+            
+            selectEmoji(feature.icon);
+            currentMedia = feature.media;
+            if (currentMedia) {
+                mediaSize = currentMedia.size;
+            }
+
+            displayMediaPreview();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Özellik sil
+        async function deleteFeature(index) {
+            if (!confirm('Bu özelliği silmek istediğinizden emin misiniz?')) return;
+            
+            console.log('Siliniyor:', features[index]);
+            features.splice(index, 1);
+            
+            const saved = await saveFeaturesToSupabase();
+            if (saved) {
+                renderFeatures();
+                initSortable();
+                showSuccess('Özellik silindi!');
+            }
+        }
+
+        // Formu temizle
+        function resetForm() {
+            document.getElementById('formTitle').textContent = '➕ Yeni Özellik Ekle';
+            document.getElementById('featureForm').reset();
+            document.getElementById('featureId').value = '';
+            currentMedia = null;
+            mediaSize = 300;
+            selectEmoji('🎯');
+            displayMediaPreview();
+        }
+
+        // Başarı mesajı
+        function showSuccess(message) {
+            const msg = document.getElementById('successMsg');
+            msg.textContent = '✅ ' + message;
+            msg.style.display = 'block';
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

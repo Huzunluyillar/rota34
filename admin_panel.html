@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rota 34 - Admin Paneli</title>
+    
+    <!-- Supabase Kütüphanesi -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         * {
             margin: 0;
@@ -16,7 +20,6 @@
             background: #f5f6fa;
         }
 
-        /* Login Screen */
         .login-container {
             min-height: 100vh;
             display: flex;
@@ -38,6 +41,28 @@
             text-align: center;
             margin-bottom: 2rem;
             color: #0F2027;
+            font-size: 2rem;
+        }
+
+        .security-badge {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(247, 127, 0, 0.1));
+            border-radius: 10px;
+            border-left: 4px solid #FF6B35;
+        }
+
+        .security-badge strong {
+            color: #FF6B35;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .security-badge small {
+            color: #666;
+            font-size: 0.9rem;
         }
 
         .alert {
@@ -98,7 +123,6 @@
             box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
         }
 
-        /* Admin Panel */
         .admin-container {
             display: none;
             min-height: 100vh;
@@ -108,7 +132,6 @@
             display: flex;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 280px;
             background: linear-gradient(135deg, #0F2027 0%, #203A43 100%);
@@ -152,7 +175,6 @@
             background: linear-gradient(135deg, #FF6B35, #F77F00);
         }
 
-        /* Main Content */
         .main-content {
             margin-left: 280px;
             flex: 1;
@@ -250,20 +272,30 @@
     <div id="loginScreen" class="login-container">
         <div class="login-box">
             <h2>🔐 Admin Girişi</h2>
-            <div id="loginError" class="alert alert-danger">
-                Kullanıcı adı veya şifre hatalı!
+            
+            <div class="security-badge">
+                <strong>🛡️ Supabase + Google Authenticator</strong>
+                <small>Backend Database + 2FA Koruması</small>
             </div>
+            
+            <div id="loginError" class="alert alert-danger"></div>
+            
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group">
-                    <label>Kullanıcı Adı</label>
+                    <label>👤 Kullanıcı Adı</label>
                     <input type="text" id="username" required autocomplete="username">
                 </div>
                 <div class="form-group">
-                    <label>Şifre</label>
+                    <label>🔒 Şifre</label>
                     <input type="password" id="password" required autocomplete="current-password">
                 </div>
                 <button type="submit" class="btn btn-primary">Giriş Yap</button>
             </form>
+            
+            <div style="margin-top: 1.5rem; text-align: center; color: #666; font-size: 0.85rem;">
+                <p>✅ Supabase Backend ile Güvenli</p>
+                <p>✅ Google Authenticator Korumalı</p>
+            </div>
         </div>
     </div>
 
@@ -283,8 +315,8 @@
             <div class="menu-item" data-section="content">
                 <span>📝</span> İçerik Yönetimi
             </div>
-            <div class="menu-item" data-section="features">
-                <span>⭐</span> Özellikler
+            <div class="menu-item" onclick="window.location.href='features-management.html'">
+                <span>⭐</span> Özellikler Yönetimi
             </div>
         </div>
 
@@ -298,21 +330,39 @@
             <div id="dashboard" class="content-section active">
                 <div class="stats-grid">
                     <div class="stat-card" style="background: linear-gradient(135deg, #FF6B35, #F77F00);">
-                        <h3>12</h3>
-                        <p>Toplam Özellik</p>
+                        <h3>🔒</h3>
+                        <p>Supabase Güvenliği</p>
+                        <small>Backend + 2FA Aktif</small>
                     </div>
                     <div class="stat-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-                        <h3>4</h3>
-                        <p>Sayfa Sayısı</p>
+                        <h3>☁️</h3>
+                        <p>Cloud Database</p>
+                        <small>PostgreSQL</small>
+                    </div>
+                    <div class="stat-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                        <h3>📊</h3>
+                        <p>Premium Sistem</p>
+                        <small>Active</small>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-title">📊 Hızlı Erişim</div>
-                    <p>Admin paneline hoş geldiniz! Sol menüden düzenlemek istediğiniz bölüme geçiş yapabilirsiniz.</p>
+                    <div class="card-title">🚀 Hoş Geldiniz!</div>
+                    <p style="margin-bottom: 1rem;">Admin paneline hoş geldiniz! Premium sistem aktif.</p>
+                    
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: #e8f5e9; border-radius: 10px; border-left: 4px solid #4caf50;">
+                        <strong>✅ Aktif Özellikler:</strong>
+                        <ul style="margin-top: 0.5rem; margin-left: 1.5rem; color: #666;">
+                            <li>Supabase Backend Database</li>
+                            <li>Google Authenticator 2FA</li>
+                            <li>Premium Deneme Sistemi</li>
+                            <li>Test Linki Yönetimi</li>
+                            <li>Dinamik Deneme Süresi</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-            <!-- Diğer Bölümler -->
+            <!-- Renkler -->
             <div id="colors" class="content-section">
                 <div class="card">
                     <div class="card-title">🎨 Renk Yönetimi</div>
@@ -320,17 +370,53 @@
                 </div>
             </div>
 
+            <!-- İçerik Yönetimi -->
             <div id="content" class="content-section">
                 <div class="card">
-                    <div class="card-title">📝 İçerik Düzenleme</div>
-                    <p>İçerik yönetimi buradan yapılacak...</p>
+                    <div class="card-title">📱 Test Linki Yönetimi</div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="testLinkEnabled" onchange="saveTestSettings()" style="width: auto; margin-right: 10px;">
+                            Test Linkini Aktif Et
+                        </label>
+                    </div>
+                    
+                    <div class="form-group" id="testLinkInputGroup" style="display: none;">
+                        <label>Google Play Test Linki</label>
+                        <input type="text" id="testLink" value="https://play.google.com/apps/testing/com.baskaya.route34" style="width: 100%; padding: 0.8rem; border: 2px solid #e1e8ed; border-radius: 8px;">
+                    </div>
+                    
+                    <button onclick="saveTestSettings()" class="btn btn-primary" style="width: auto;">
+                        💾 Kaydet
+                    </button>
+                    
+                    <div id="testLinkStatus" style="margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none;"></div>
                 </div>
-            </div>
 
-            <div id="features" class="content-section">
-                <div class="card">
-                    <div class="card-title">⭐ Özellik Yönetimi</div>
-                    <p>Özellikler buradan yönetilecek...</p>
+                <!-- Deneme Süresi Ayarı -->
+                <div class="card" style="margin-top: 2rem;">
+                    <div class="card-title">⏱️ Premium Deneme Süresi</div>
+                    
+                    <div class="form-group">
+                        <label>Deneme Süresi (Gün)</label>
+                        <input type="number" id="trialDays" value="20" min="1" max="365" style="width: 200px; padding: 0.8rem; border: 2px solid #e1e8ed; border-radius: 8px;">
+                        <button onclick="saveTrialDays()" class="btn btn-primary" style="width: auto; margin-left: 1rem;">
+                            💾 Kaydet
+                        </button>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: #e3f2fd; border-radius: 10px; border-left: 4px solid #2196f3;">
+                        <strong>ℹ️ Bilgi:</strong>
+                        <ul style="margin-top: 0.5rem; margin-left: 1.5rem; color: #666;">
+                            <li>Kullanıcılar belirttiğiniz gün kadar ücretsiz kullanabilir</li>
+                            <li>Süre bittiğinde Premium ekranı gösterilir</li>
+                            <li>Varsayılan: 20 gün</li>
+                            <li>Minimum: 1 gün, Maksimum: 365 gün</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="trialDaysStatus" style="margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none;"></div>
                 </div>
             </div>
         </div>

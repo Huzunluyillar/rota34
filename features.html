@@ -5,6 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Özellikler - Rota 34</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* Loading animation */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #FF6B35;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 1rem;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Media preview styles */
+        .feature-media {
+            margin-top: 1rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .feature-media img,
+        .feature-media video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 15px;
+        }
+
+        .feature-media video {
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.8rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: #999;
+            font-size: 1.1rem;
+        }
+
+        /* Error state */
+        .error-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: #fff3cd;
+            border-radius: 15px;
+            border: 2px solid #ffc107;
+        }
+
+        .error-state h3 {
+            color: #856404;
+            margin-bottom: 1rem;
+        }
+    </style>
 </head>
 <body>
     <nav id="navbar">
@@ -27,67 +115,31 @@
             <h2>Kurumsal Düzeyde Özellikler</h2>
             <p>Saha çalışmanızı kolaylaştıran, profesyonel araçlar</p>
         </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🗺️</div>
-                <h3>Haritaya Dokunarak Müşteri Ekle</h3>
-                <p>Harita üzerinde istediğiniz konuma dokunun, müşterinizi anında ekleyin. Hızlı, basit ve sezgisel kullanım.</p>
+        
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-container">
+            <div style="text-align: center;">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">Özellikler yükleniyor...</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">📱</div>
-                <h3>QR Kod ile Anında Ekleme</h3>
-                <p>Müşteri QR kodunu tarayın, tüm bilgiler otomatik olarak sisteme aktarılsın. Zaman kaybı yok, hata riski sıfır.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">✍️</div>
-                <h3>Manuel Adres Girişi</h3>
-                <p>Klasik yöntem: İstediğiniz müşteri bilgilerini manuel olarak girin, tam kontrol sizde.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🤖</div>
-                <h3>Otomatik Adres Tanıma</h3>
-                <p>Akıllı algoritma ile adres bilgilerini otomatik olarak tanır ve doğru formatta kaydeder.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📸</div>
-                <h3>Kamera ile OCR Okuma</h3>
-                <p>Kargo poşeti, fatura, kartvizit - ne olursa olsun! Kameranızla tarayın, adres bilgileri otomatik olarak eklensin.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔄</div>
-                <h3>WhatsApp ile Rota Paylaşımı</h3>
-                <p>Hazırladığınız rotayı tek tıkla WhatsApp üzerinden paylaşın. Ekip çalışması hiç bu kadar kolay olmamıştı.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📥</div>
-                <h3>Tek Tık ile İçe Aktarma</h3>
-                <p>Paylaşılan rotayı tek tıkla kendi uygulamanıza aktarın. Anında işe koyulun.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>Detaylı Raporlama Sistemi</h3>
-                <p>Günlük, haftalık, aylık ve yıllık performans raporları. Başarı oranlarınızı takip edin.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">⏸️</div>
-                <h3>Geçici Pasife Alma</h3>
-                <p>Müşterinizi geçici olarak pasife alın. Ziyaret rotasına dahil edilmez, raporlarınızı etkilemez.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🗺️</div>
-                <h3>Güzergah Önizleme</h3>
-                <p>Ziyarete başlamadan önce tüm rotanızı harita üzerinde görün.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎯</div>
-                <h3>Akıllı Komşu Sıralama</h3>
-                <p>En yakından en uzağa otomatik numaralandırma. Her müşteriye en verimli sırayla gidin.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📍</div>
-                <h3>Marker Yönetimi</h3>
-                <p>Harita üzerinde marker'a dokunun, müşteri bilgileri açılsın. Uzun basarak sürükleyin, konumunu değiştirin.</p>
-            </div>
+        </div>
+
+        <!-- Features Grid (will be populated dynamically) -->
+        <div id="featuresGrid" class="features-grid" style="display: none;">
+            <!-- Features will be loaded here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-state-icon">📭</div>
+            <h3>Henüz Özellik Eklenmedi</h3>
+            <p>Admin panelden özellikler ekleyebilirsiniz.</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="error-state" style="display: none;">
+            <h3>⚠️ Yükleme Hatası</h3>
+            <p>Özellikler yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin.</p>
         </div>
     </section>
 
@@ -116,6 +168,141 @@
     </footer>
 
     <script>
+        // Supabase configuration
+        const SUPABASE_URL = 'https://zyjtcywneublnmssiqhm.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5anRjeXduZXVibG5tc3NpcWhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MTgxMzksImV4cCI6MjA4MzI5NDEzOX0.7o0w5i2VJuzzK0QfEK1l3WMReBHZyehdY0_qZQEuV9U';
+        
+        let supabaseClient;
+
+        // Initialize Supabase and load features
+        async function initializePage() {
+            try {
+                // Initialize Supabase
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                console.log('Supabase initialized');
+
+                // Load features
+                await loadFeatures();
+
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showError();
+            }
+        }
+
+        // Load features from Supabase
+        async function loadFeatures() {
+            const loadingState = document.getElementById('loadingState');
+            const featuresGrid = document.getElementById('featuresGrid');
+            const emptyState = document.getElementById('emptyState');
+            const errorState = document.getElementById('errorState');
+
+            try {
+                console.log('Loading features from Supabase...');
+
+                // Fetch features from Supabase
+                const { data, error } = await supabaseClient
+                    .from('site_settings')
+                    .select('*')
+                    .eq('key', 'features')
+                    .single();
+
+                if (error && error.code !== 'PGRST116') {
+                    throw error;
+                }
+
+                console.log('Supabase response:', data);
+
+                // Hide loading
+                loadingState.style.display = 'none';
+
+                // Check if features exist
+                if (!data || !data.value || !data.value.features || data.value.features.length === 0) {
+                    console.log('No features found');
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                const features = data.value.features;
+                console.log('Features loaded:', features.length);
+
+                // Render features
+                renderFeatures(features);
+                featuresGrid.style.display = 'grid';
+
+            } catch (error) {
+                console.error('Error loading features:', error);
+                loadingState.style.display = 'none';
+                errorState.style.display = 'block';
+            }
+        }
+
+        // Render features to the page
+        function renderFeatures(features) {
+            const grid = document.getElementById('featuresGrid');
+            grid.innerHTML = '';
+
+            features.forEach(feature => {
+                const card = createFeatureCard(feature);
+                grid.appendChild(card);
+            });
+        }
+
+        // Create a feature card element
+        function createFeatureCard(feature) {
+            const card = document.createElement('div');
+            card.className = 'feature-card';
+
+            // Icon
+            const icon = document.createElement('div');
+            icon.className = 'feature-icon';
+            icon.textContent = feature.icon || '⭐';
+
+            // Title
+            const title = document.createElement('h3');
+            title.textContent = feature.title;
+
+            // Description
+            const description = document.createElement('p');
+            description.textContent = feature.description;
+
+            // Append elements
+            card.appendChild(icon);
+            card.appendChild(title);
+            card.appendChild(description);
+
+            // Add media if exists
+            if (feature.media) {
+                const mediaContainer = document.createElement('div');
+                mediaContainer.className = 'feature-media';
+
+                if (feature.media.type === 'image') {
+                    const img = document.createElement('img');
+                    img.src = feature.media.data;
+                    img.alt = feature.title;
+                    img.style.width = feature.media.size ? `${feature.media.size}px` : 'auto';
+                    mediaContainer.appendChild(img);
+                } else if (feature.media.type === 'video') {
+                    const video = document.createElement('video');
+                    video.src = feature.media.data;
+                    video.controls = true;
+                    video.style.width = feature.media.size ? `${feature.media.size}px` : 'auto';
+                    mediaContainer.appendChild(video);
+                }
+
+                card.appendChild(mediaContainer);
+            }
+
+            return card;
+        }
+
+        // Show error state
+        function showError() {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+        }
+
+        // Navbar scroll effect
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             if (window.scrollY > 100) {
@@ -124,6 +311,13 @@
                 nav.classList.remove('scrolled');
             }
         });
+
+        // Initialize page when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializePage);
+        } else {
+            initializePage();
+        }
     </script>
 </body>
 </html>
