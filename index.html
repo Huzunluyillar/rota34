@@ -10,7 +10,7 @@
     <nav id="navbar">
         <div class="nav-container">
             <div class="logo-container" onclick="window.location.href='index.html'">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='grad1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FFA94D;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%23FF6B35;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23F77F00;stop-opacity:1' /%3E%3C/linearGradient%3E%3ClinearGradient id='grad2' x1='100%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%23764ba2;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23f093fb;stop-opacity:1' /%3E%3C/linearGradient%3E%3Cfilter id='glow'%3E%3CfeGaussianBlur stdDeviation='4' result='coloredBlur'/%3E%3CfeMerge%3E%3CfeMergeNode in='coloredBlur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Ccircle cx='100' cy='100' r='90' fill='url(%23grad1)' opacity='0.2'/%3E%3Cpath d='M 40 60 Q 40 40 60 40 L 140 40 Q 160 40 160 60 Q 160 80 140 90 L 110 105 L 110 130 M 110 150 L 110 155' stroke='white' stroke-width='12' stroke-linecap='round' fill='none' filter='url(%23glow)'/%3E%3Cpath d='M 50 80 A 50 50 0 0 1 150 80' stroke='url(%23grad2)' stroke-width='8' fill='none' opacity='0.6'/%3E%3Cpath d='M 60 100 A 40 40 0 0 0 140 100' stroke='url(%23grad2)' stroke-width='8' fill='none' opacity='0.6'/%3E%3Ccircle cx='100' cy='80' r='30' fill='url(%23grad1)' opacity='0.3'/%3E%3Cpath d='M 85 75 L 95 85 L 115 65' stroke='white' stroke-width='6' stroke-linecap='round' fill='none' filter='url(%23glow)'/%3E%3Cpath d='M 70 120 L 80 130 L 90 120 M 110 120 L 120 130 L 130 120' stroke='url(%23grad2)' stroke-width='6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='100' cy='100' r='8' fill='white' opacity='0.8'/%3E%3C/svg%3E" alt="Rota 34" class="logo-img">
+                <img id="siteLogo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='grad1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FFA94D;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%23FF6B35;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23F77F00;stop-opacity:1' /%3E%3C/linearGradient%3E%3ClinearGradient id='grad2' x1='100%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%23764ba2;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23f093fb;stop-opacity:1' /%3E%3C/linearGradient%3E%3Cfilter id='glow'%3E%3CfeGaussianBlur stdDeviation='4' result='coloredBlur'/%3E%3CfeMerge%3E%3CfeMergeNode in='coloredBlur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Ccircle cx='100' cy='100' r='90' fill='url(%23grad1)' opacity='0.2'/%3E%3Cpath d='M 40 60 Q 40 40 60 40 L 140 40 Q 160 40 160 60 Q 160 80 140 90 L 110 105 L 110 130 M 110 150 L 110 155' stroke='white' stroke-width='12' stroke-linecap='round' fill='none' filter='url(%23glow)'/%3E%3Cpath d='M 50 80 A 50 50 0 0 1 150 80' stroke='url(%23grad2)' stroke-width='8' fill='none' opacity='0.6'/%3E%3Cpath d='M 60 100 A 40 40 0 0 0 140 100' stroke='url(%23grad2)' stroke-width='8' fill='none' opacity='0.6'/%3E%3Ccircle cx='100' cy='80' r='30' fill='url(%23grad1)' opacity='0.3'/%3E%3Cpath d='M 85 75 L 95 85 L 115 65' stroke='white' stroke-width='6' stroke-linecap='round' fill='none' filter='url(%23glow)'/%3E%3Cpath d='M 70 120 L 80 130 L 90 120 M 110 120 L 120 130 L 130 120' stroke='url(%23grad2)' stroke-width='6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='100' cy='100' r='8' fill='white' opacity='0.8'/%3E%3C/svg%3E" alt="Rota 34" class="logo-img">
                 <span class="logo-text">Rota 34</span>
             </div>
             <div class="nav-links">
@@ -121,14 +121,32 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        // Tek bir Supabase client instance kullan
+        const supabaseClient = window.supabase.createClient(
+            'https://zyjtcywneublnmssiqhm.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5anRjeXduZXVibG5tc3NpcWhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MTgxMzksImV4cCI6MjA4MzI5NDEzOX0.7o0w5i2VJuzzK0QfEK1l3WMReBHZyehdY0_qZQEuV9U'
+        );
+
+        async function loadSiteLogo() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('site_settings')
+                    .select('*')
+                    .eq('key', 'site_logo')
+                    .single();
+                
+                if (data && data.value && data.value.src) {
+                    const logoImg = document.getElementById('siteLogo');
+                    logoImg.src = data.value.src;
+                }
+            } catch (error) {
+                console.log('Logo yükleme:', error);
+            }
+        }
+
         async function checkTestButton() {
             try {
-                const supabase = window.supabase.createClient(
-                    'https://zyjtcywneublnmssiqhm.supabase.co',
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5anRjeXduZXVibG5tc3NpcWhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MTgxMzksImV4cCI6MjA4MzI5NDEzOX0.7o0w5i2VJuzzK0QfEK1l3WMReBHZyehdY0_qZQEuV9U'
-                );
-                
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('site_settings')
                     .select('*')
                     .eq('key', 'test_link')
@@ -144,6 +162,8 @@
             }
         }
         
+        // Sayfa yüklendiğinde logo ve test butonu yükle
+        loadSiteLogo();
         checkTestButton();
     </script>
 </body>

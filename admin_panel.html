@@ -255,6 +255,69 @@
             margin-bottom: 0.5rem;
         }
 
+        /* Logo Yönetimi Stilleri */
+        .logo-preview-container {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .logo-upload-area {
+            flex: 1;
+            border: 2px dashed #e1e8ed;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo-upload-area:hover {
+            border-color: #FF6B35;
+            background: rgba(255, 107, 53, 0.05);
+        }
+
+        .logo-upload-area.dragging {
+            border-color: #FF6B35;
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        .logo-preview {
+            flex: 1;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .logo-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .logo-type-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-type-btn {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #e1e8ed;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo-type-btn.active {
+            border-color: #FF6B35;
+            background: rgba(255, 107, 53, 0.1);
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
@@ -263,6 +326,9 @@
             }
             .main-content {
                 margin-left: 0;
+            }
+            .logo-preview-container {
+                flex-direction: column;
             }
         }
     </style>
@@ -308,6 +374,9 @@
             </div>
             <div class="menu-item active" data-section="dashboard">
                 <span>📊</span> Dashboard
+            </div>
+            <div class="menu-item" data-section="logo">
+                <span>🖼️</span> Logo Yönetimi
             </div>
             <div class="menu-item" data-section="colors">
                 <span>🎨</span> Renkler & Tema
@@ -357,6 +426,64 @@
                             <li>Premium Deneme Sistemi</li>
                             <li>Test Linki Yönetimi</li>
                             <li>Dinamik Deneme Süresi</li>
+                            <li>Logo Yönetimi</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logo Yönetimi -->
+            <div id="logo" class="content-section">
+                <div class="card">
+                    <div class="card-title">🖼️ Logo Yönetimi</div>
+                    
+                    <div class="logo-type-selector">
+                        <div class="logo-type-btn active" onclick="selectLogoType('url')">
+                            <strong>🔗 URL ile Logo</strong>
+                            <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">Link yapıştırın</p>
+                        </div>
+                        <div class="logo-type-btn" onclick="selectLogoType('svg')">
+                            <strong>📝 SVG Kodu</strong>
+                            <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">SVG kodunu yapıştırın</p>
+                        </div>
+                    </div>
+
+                    <div id="urlLogoInput" class="logo-input-section">
+                        <div class="form-group">
+                            <label>Logo URL'si</label>
+                            <input type="text" id="logoUrl" placeholder="https://example.com/logo.png" style="width: 100%; padding: 0.8rem; border: 2px solid #e1e8ed; border-radius: 8px;">
+                            <small style="color: #666; display: block; margin-top: 0.5rem;">PNG, JPG, SVG veya GIF formatında olabilir</small>
+                        </div>
+                    </div>
+
+                    <div id="svgLogoInput" class="logo-input-section" style="display: none;">
+                        <div class="form-group">
+                            <label>SVG Kodu (data:image/svg+xml formatında)</label>
+                            <textarea id="logoSvg" placeholder="data:image/svg+xml,%3Csvg..." rows="6" style="width: 100%; padding: 0.8rem; border: 2px solid #e1e8ed; border-radius: 8px; font-family: monospace; font-size: 0.9rem;"></textarea>
+                            <small style="color: #666; display: block; margin-top: 0.5rem;">Tam SVG data URL'sini yapıştırın</small>
+                        </div>
+                    </div>
+
+                    <div class="logo-preview-container">
+                        <div class="logo-preview">
+                            <h4 style="margin-bottom: 1rem;">Önizleme</h4>
+                            <img id="logoPreview" src="" alt="Logo Önizleme" style="display: none;">
+                            <p id="logoPreviewPlaceholder" style="color: #999;">Logo önizlemesi burada görünecek</p>
+                        </div>
+                    </div>
+
+                    <button onclick="saveLogo()" class="btn btn-primary" style="width: auto; margin-top: 1rem;">
+                        💾 Logoyu Kaydet ve Uygula
+                    </button>
+
+                    <div id="logoStatus" style="margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none;"></div>
+
+                    <div style="margin-top: 2rem; padding: 1rem; background: #e3f2fd; border-radius: 10px; border-left: 4px solid #2196f3;">
+                        <strong>ℹ️ Bilgi:</strong>
+                        <ul style="margin-top: 0.5rem; margin-left: 1.5rem; color: #666;">
+                            <li>Logo anında tüm sayfalarda güncellenecek</li>
+                            <li>Önerilen boyut: 200x200 piksel veya daha büyük</li>
+                            <li>Şeffaf arka plan için PNG veya SVG kullanın</li>
                         </ul>
                     </div>
                 </div>
@@ -423,5 +550,143 @@
     </div>
 
     <script src="admin-secure.js"></script>
+    <script>
+        // Logo Yönetimi Fonksiyonları
+        let currentLogoType = 'url';
+
+        function selectLogoType(type) {
+            currentLogoType = type;
+            document.querySelectorAll('.logo-type-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.logo-type-btn').classList.add('active');
+
+            if (type === 'url') {
+                document.getElementById('urlLogoInput').style.display = 'block';
+                document.getElementById('svgLogoInput').style.display = 'none';
+            } else {
+                document.getElementById('urlLogoInput').style.display = 'none';
+                document.getElementById('svgLogoInput').style.display = 'block';
+            }
+        }
+
+        // Logo önizleme
+        document.getElementById('logoUrl')?.addEventListener('input', (e) => {
+            updateLogoPreview(e.target.value);
+        });
+
+        document.getElementById('logoSvg')?.addEventListener('input', (e) => {
+            updateLogoPreview(e.target.value);
+        });
+
+        function updateLogoPreview(src) {
+            const preview = document.getElementById('logoPreview');
+            const placeholder = document.getElementById('logoPreviewPlaceholder');
+            
+            if (src && src.trim()) {
+                preview.src = src;
+                preview.style.display = 'block';
+                placeholder.style.display = 'none';
+            } else {
+                preview.style.display = 'none';
+                placeholder.style.display = 'block';
+            }
+        }
+
+        async function saveLogo() {
+            const status = document.getElementById('logoStatus');
+            let logoSrc = '';
+
+            if (currentLogoType === 'url') {
+                logoSrc = document.getElementById('logoUrl').value.trim();
+            } else {
+                logoSrc = document.getElementById('logoSvg').value.trim();
+            }
+
+            if (!logoSrc) {
+                status.style.display = 'block';
+                status.style.background = '#f8d7da';
+                status.style.color = '#721c24';
+                status.textContent = '❌ Lütfen logo URL veya SVG kodu girin!';
+                return;
+            }
+
+            try {
+                const sb = initSupabase();
+                
+                const { data, error } = await sb
+                    .from('site_settings')
+                    .upsert({
+                        key: 'site_logo',
+                        value: {
+                            type: currentLogoType,
+                            src: logoSrc
+                        },
+                        updated_at: new Date().toISOString()
+                    }, {
+                        onConflict: 'key'
+                    });
+                
+                if (error) throw error;
+                
+                status.style.display = 'block';
+                status.style.background = '#d4edda';
+                status.style.color = '#155724';
+                status.textContent = '✅ Logo başarıyla kaydedildi! Tüm sayfalarda güncellenecek.';
+                
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Logo kaydetme hatası:', error);
+                status.style.display = 'block';
+                status.style.background = '#f8d7da';
+                status.style.color = '#721c24';
+                status.textContent = '❌ Hata: ' + error.message;
+            }
+        }
+
+        async function loadLogo() {
+            try {
+                const sb = initSupabase();
+                const { data, error } = await sb
+                    .from('site_settings')
+                    .select('*')
+                    .eq('key', 'site_logo')
+                    .single();
+                
+                if (error && error.code !== 'PGRST116') {
+                    throw error;
+                }
+                
+                if (data && data.value) {
+                    currentLogoType = data.value.type || 'url';
+                    
+                    if (currentLogoType === 'url') {
+                        document.getElementById('logoUrl').value = data.value.src || '';
+                    } else {
+                        document.getElementById('logoSvg').value = data.value.src || '';
+                    }
+                    
+                    updateLogoPreview(data.value.src);
+                }
+                
+            } catch (error) {
+                console.error('Logo yükleme hatası:', error);
+            }
+        }
+
+        // Sayfa yüklendiğinde logo yükle
+        document.addEventListener('DOMContentLoaded', function() {
+            const sessionManager = new SessionManager();
+            if (sessionManager.isValid()) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminPanel').classList.add('active');
+                loadTestSettings();
+                loadTrialDays();
+                loadLogo();
+            }
+            initMenuNavigation();
+        });
+    </script>
 </body>
 </html>

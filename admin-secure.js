@@ -15,6 +15,7 @@ const SECURITY_CONFIG = {
     MAX_LOGIN_ATTEMPTS: 5,
     LOCKOUT_DURATION: 15 * 60 * 1000,
     SESSION_TIMEOUT: 60 * 60 * 1000,
+    REQUIRE_2FA: false  // 🔴 2FA KAPALI (Test için - sonra true yapılacak)
 };
 
 let supabaseClient = null;
@@ -55,7 +56,7 @@ class TOTPGenerator {
         
         const bytes = [];
         for (let i = 0; i + 8 <= bits.length; i += 8) {
-            bytes.push(parseInt(bits.substring(i, 8), 2));
+            bytes.push(parseInt(bits.substring(i, i + 8), 2));
         }
         
         return new Uint8Array(bytes);
@@ -262,7 +263,19 @@ async function handleLogin(event) {
             return;
         }
         
-        show2FAPrompt(users, bruteForce, sb);
+        // 🔴 2FA kontrolü - opsiyonel
+        if (SECURITY_CONFIG.REQUIRE_2FA && users.totp_secret) {
+            show2FAPrompt(users, bruteForce, sb);
+        } else {
+            // 2FA kapalıysa direkt giriş yap
+            bruteForce.reset();
+            await sb
+                .from('admin_users')
+                .update({ last_login: new Date().toISOString() })
+                .eq('username', username);
+            await logLoginAttempt(sb, username, true);
+            completeLogin(username);
+        }
         
     } catch (error) {
         console.error('Login error:', error);
