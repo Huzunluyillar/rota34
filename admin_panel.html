@@ -438,7 +438,11 @@
                     <div class="card-title">🖼️ Logo Yönetimi</div>
                     
                     <div class="logo-type-selector">
-                        <div class="logo-type-btn active" onclick="selectLogoType('url')">
+                        <div class="logo-type-btn active" onclick="selectLogoType('upload')">
+                            <strong>📤 Dosya Yükle</strong>
+                            <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">Bilgisayardan seç veya sürükle</p>
+                        </div>
+                        <div class="logo-type-btn" onclick="selectLogoType('url')">
                             <strong>🔗 URL ile Logo</strong>
                             <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">Link yapıştırın</p>
                         </div>
@@ -448,7 +452,18 @@
                         </div>
                     </div>
 
-                    <div id="urlLogoInput" class="logo-input-section">
+                    <!-- Dosya Yükleme Alanı -->
+                    <div id="uploadLogoInput" class="logo-input-section">
+                        <input type="file" id="logoFileInput" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
+                        <div id="dropZone" class="logo-upload-area" onclick="document.getElementById('logoFileInput').click()">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">📁</div>
+                            <p style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">Logo Yükle</p>
+                            <p style="color: #666; font-size: 0.9rem;">Dosyayı buraya sürükleyin veya tıklayın</p>
+                            <p style="color: #999; font-size: 0.85rem; margin-top: 0.5rem;">PNG, JPG, SVG, GIF (Max 5MB)</p>
+                        </div>
+                    </div>
+
+                    <div id="urlLogoInput" class="logo-input-section" style="display: none;">
                         <div class="form-group">
                             <label>Logo URL'si</label>
                             <input type="text" id="logoUrl" placeholder="https://example.com/logo.png" style="width: 100%; padding: 0.8rem; border: 2px solid #e1e8ed; border-radius: 8px;">
@@ -484,6 +499,7 @@
                             <li>Logo anında tüm sayfalarda güncellenecek</li>
                             <li>Önerilen boyut: 200x200 piksel veya daha büyük</li>
                             <li>Şeffaf arka plan için PNG veya SVG kullanın</li>
+                            <li>Maksimum dosya boyutu: 5MB</li>
                         </ul>
                     </div>
                 </div>
@@ -552,20 +568,86 @@
     <script src="admin-secure.js"></script>
     <script>
         // Logo Yönetimi Fonksiyonları
-        let currentLogoType = 'url';
+        let currentLogoType = 'upload';
+        let currentLogoData = null;
 
         function selectLogoType(type) {
             currentLogoType = type;
             document.querySelectorAll('.logo-type-btn').forEach(btn => btn.classList.remove('active'));
             event.target.closest('.logo-type-btn').classList.add('active');
 
-            if (type === 'url') {
+            document.getElementById('uploadLogoInput').style.display = 'none';
+            document.getElementById('urlLogoInput').style.display = 'none';
+            document.getElementById('svgLogoInput').style.display = 'none';
+
+            if (type === 'upload') {
+                document.getElementById('uploadLogoInput').style.display = 'block';
+            } else if (type === 'url') {
                 document.getElementById('urlLogoInput').style.display = 'block';
-                document.getElementById('svgLogoInput').style.display = 'none';
             } else {
-                document.getElementById('urlLogoInput').style.display = 'none';
                 document.getElementById('svgLogoInput').style.display = 'block';
             }
+        }
+
+        // Sürükle-Bırak İşlemleri
+        const dropZone = document.getElementById('dropZone');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragging');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragging');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragging');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        // Dosya Seçme
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        }
+
+        // Dosya İşleme
+        function handleFile(file) {
+            // Dosya boyutu kontrolü (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('❌ Dosya boyutu 5MB\'dan küçük olmalı!');
+                return;
+            }
+
+            // Dosya tipi kontrolü
+            if (!file.type.startsWith('image/')) {
+                alert('❌ Sadece resim dosyaları yüklenebilir!');
+                return;
+            }
+
+            // Dosyayı Base64'e çevir
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                currentLogoData = e.target.result;
+                updateLogoPreview(currentLogoData);
+                
+                // Drop zone'u güncelle
+                dropZone.innerHTML = `
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+                    <p style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">${file.name}</p>
+                    <p style="color: #666; font-size: 0.9rem;">Yüklendi! Kaydet butonuna basın.</p>
+                    <button onclick="document.getElementById('logoFileInput').click(); event.stopPropagation();" style="margin-top: 1rem; padding: 0.5rem 1rem; background: #FF6B35; color: white; border: none; border-radius: 8px; cursor: pointer;">Başka Dosya Seç</button>
+                `;
+            };
+            reader.readAsDataURL(file);
         }
 
         // Logo önizleme
@@ -585,9 +667,17 @@
                 preview.src = src;
                 preview.style.display = 'block';
                 placeholder.style.display = 'none';
+                preview.onerror = () => {
+                    preview.style.display = 'none';
+                    placeholder.style.display = 'block';
+                    placeholder.textContent = '⚠️ Logo yüklenemedi. Geçerli bir URL veya dosya seçin.';
+                    placeholder.style.color = '#f44336';
+                };
             } else {
                 preview.style.display = 'none';
                 placeholder.style.display = 'block';
+                placeholder.textContent = 'Logo önizlemesi burada görünecek';
+                placeholder.style.color = '#999';
             }
         }
 
@@ -595,7 +685,9 @@
             const status = document.getElementById('logoStatus');
             let logoSrc = '';
 
-            if (currentLogoType === 'url') {
+            if (currentLogoType === 'upload') {
+                logoSrc = currentLogoData;
+            } else if (currentLogoType === 'url') {
                 logoSrc = document.getElementById('logoUrl').value.trim();
             } else {
                 logoSrc = document.getElementById('logoSvg').value.trim();
@@ -605,7 +697,7 @@
                 status.style.display = 'block';
                 status.style.background = '#f8d7da';
                 status.style.color = '#721c24';
-                status.textContent = '❌ Lütfen logo URL veya SVG kodu girin!';
+                status.textContent = '❌ Lütfen logo dosyası, URL veya SVG kodu girin!';
                 return;
             }
 
@@ -659,12 +751,14 @@
                 }
                 
                 if (data && data.value) {
-                    currentLogoType = data.value.type || 'url';
+                    currentLogoType = data.value.type || 'upload';
                     
                     if (currentLogoType === 'url') {
                         document.getElementById('logoUrl').value = data.value.src || '';
-                    } else {
+                    } else if (currentLogoType === 'svg') {
                         document.getElementById('logoSvg').value = data.value.src || '';
+                    } else if (currentLogoType === 'upload') {
+                        currentLogoData = data.value.src;
                     }
                     
                     updateLogoPreview(data.value.src);

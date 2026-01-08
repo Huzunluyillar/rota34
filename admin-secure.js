@@ -15,7 +15,7 @@ const SECURITY_CONFIG = {
     MAX_LOGIN_ATTEMPTS: 5,
     LOCKOUT_DURATION: 15 * 60 * 1000,
     SESSION_TIMEOUT: 60 * 60 * 1000,
-    REQUIRE_2FA: false  // 🔴 2FA KAPALI (Test için - sonra true yapılacak)
+    REQUIRE_2FA: true  // 🟢 2FA AKTİF
 };
 
 let supabaseClient = null;
